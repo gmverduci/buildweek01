@@ -40,7 +40,6 @@
             type="checkbox"
             class="checkbox"
             id="choose-difficulty"
-            onclick="showOptions()"
           />
         </div>
         <label class="checkbox-text">Show difficulty options</label>
@@ -60,7 +59,6 @@
           <input
             type="range"
             id="amount"
-            value="amount"
             min="1"
             max="30"
             oninput="this.nextElementSibling.value = this.value"
@@ -70,7 +68,7 @@
       </div>
       <div class="container-checkbox">
         <div class="checkbox">
-          <input type="checkbox" id="checkbox" onclick="showOptions()" />
+          <input type="checkbox" id="checkbox" />
         </div>
         <span class="checkbox-text"
           >I promise to answer myself without help from anyone</span
