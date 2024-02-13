@@ -20,6 +20,7 @@ document.addEventListener('DOMContentLoaded', () => {
     const correctAnswers = [];
     const quizQuestions = [];
 
+
     let score = 0;
     let currentQuestionIndex = 0;
 
@@ -32,6 +33,7 @@ document.addEventListener('DOMContentLoaded', () => {
     const answerButtons = document.getElementsByClassName('');
     const resultSection = document.getElementById('');
     const scoreElement = document.getElementById('');
+    const timeElement = document.getElementById('countdown');
 
     const loadQuestion = () => {
         if (currentQuestionIndex < questions.length) {
@@ -44,7 +46,9 @@ document.addEventListener('DOMContentLoaded', () => {
                 button.innerText = answer;
                 button.addEventListener('click', () => selectAnswer(answer));
                 answersContainer.appendChild(button);
+
             })
+            startTime()
         } else {
             showResult();
         }
@@ -129,8 +133,26 @@ document.addEventListener('DOMContentLoaded', () => {
         })
     }
 
+    const startTime = () => {
+        const currentQuestion = questions[currentQuestionIndex];
+        let time = currentQuestion.time;
+        timeElement.innerText = time;
+        const timeInterval = setInterval(() => {
+            time--;
+            timeElement.innerText = time;
+            if (time <= 0) {
+                clearInterval(timeInterval)
+                loadQuestion()
+            }
+        
+        }, 1000)
+    }
+
+
 
     enableStart();
     startQuiz();
-    
+
+
+
 });
