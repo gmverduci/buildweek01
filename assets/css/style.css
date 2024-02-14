@@ -10,14 +10,15 @@ body {
   color: white;
 }
 
-h1,
-h3 {
+h1, h3 {
   font-family: "Outfit", sans-serif;
 }
+
 h1 {
   margin-right: 500px;
   font-size: 80px;
 }
+
 h3 {
   color: #d20094;
 }
@@ -25,10 +26,12 @@ h3 {
 #logo {
   width: 200px;
 }
+
 .container-list {
   /*contenitore lista*/
   padding-right: 50px;
 }
+
 ul {
   padding-left: 28px;
 }
@@ -37,7 +40,7 @@ ul {
   margin-bottom: 70px;
 }
 
-#options {
+.hidden {
   display: none;
 }
 
@@ -46,6 +49,7 @@ ul {
   opacity: 0;
   margin: 0;
 }
+
 #checkbox:checked,
 #choose-difficulty:checked {
   opacity: 100;
@@ -79,6 +83,7 @@ ul {
   font-weight: 700;
   font-size: 15px;
 }
+
 .checkbox-text {
   padding: 10px;
 }
