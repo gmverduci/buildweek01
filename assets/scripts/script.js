@@ -294,7 +294,7 @@ document.addEventListener('DOMContentLoaded', () => {
         const selectedAnswer = event.target.innerText;
 
         if (selectedAnswer === currentQuestion.correct_answer) {
-            score += currentQuestion.value;
+            score ++;
         }
 
         currentQuestionIndex++;
@@ -308,10 +308,12 @@ document.addEventListener('DOMContentLoaded', () => {
     })
 
     const initQuiz = (amount, difficulty) => {
-        let filteredQuestions = questions.filter(question => question.difficulty === difficulty);
+        let filteredQuestions = questions.filter(question => difficulty === 'default' || question.difficulty === difficulty);
 
         if (amount && amount < filteredQuestions.length) {
             filteredQuestions = filteredQuestions.sort(() => Math.random() - 0.5).slice(0, amount);
+        } else {
+            filteredQuestions = filteredQuestions.sort(() => Math.random() - 0.5);
         }
 
         quizQuestions = filteredQuestions;
