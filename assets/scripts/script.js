@@ -12,6 +12,9 @@ document.addEventListener('DOMContentLoaded', () => {
                 "HyperText Markdown Language",
                 "HyperTool Markup Language",
                 "HyperText Makeup Language",
+                "HyperText Makedown Language",
+                "HyperFont Markup Language",
+                "HyperLink Markup Language"
             ],
         },
         {
@@ -26,6 +29,9 @@ document.addEventListener('DOMContentLoaded', () => {
                 "<script>",
                 "<css>",
                 "<link>",
+                "<div>",
+                "<span>",
+                "<table>",
             ],
         },
         {
@@ -40,6 +46,9 @@ document.addEventListener('DOMContentLoaded', () => {
                 "color",
                 "bgcolor",
                 "background-image",
+                "border-color",
+                "text-color",
+                "fill-color",
             ],
         },
         {
@@ -54,6 +63,9 @@ document.addEventListener('DOMContentLoaded', () => {
                 "text-size",
                 "font-weight",
                 "text-style",
+                "line-height",
+                "font-family",
+                "letter-spacing",
             ],
         },
         {
@@ -68,6 +80,9 @@ document.addEventListener('DOMContentLoaded', () => {
                 "#",
                 "<!-- -->",
                 "// for single line comments only",
+                "/* */ for single line comments",
+                "<>",
+                "~~",
             ],
         },
         {
@@ -82,6 +97,9 @@ document.addEventListener('DOMContentLoaded', () => {
                 "title",
                 "src",
                 "href",
+                "data-alt",
+                "alt-text",
+                "img-alt",
             ],
         },
         {
@@ -96,6 +114,9 @@ document.addEventListener('DOMContentLoaded', () => {
                 "font-style: capitalize",
                 "text-style: uppercase",
                 "text-transform: uppercase",
+                "text-decoration: capitalize",
+                "transform: capitalize",
+                "capitalization: all-words",
             ],
         },
         {
@@ -110,6 +131,9 @@ document.addEventListener('DOMContentLoaded', () => {
                 "first()",
                 "array.first()",
                 "array(0)",
+                "getFirst()",
+                "element[0]",
+                "get(0)",
             ],
         },
         {
@@ -124,6 +148,9 @@ document.addEventListener('DOMContentLoaded', () => {
                 "<bottom>",
                 "<foot>",
                 "<header>",
+                "<end>",
+                "<closing>",
+                "<summary>",
             ],
         },
         {
@@ -138,6 +165,9 @@ document.addEventListener('DOMContentLoaded', () => {
                 "<script href='xxx.js'>",
                 "<script name='xxx.js'>",
                 "<link src='xxx.js'>",
+                "<script external='xxx.js'>",
+                "<script file='xxx.js'>",
+                "<script type='text/javascript' src='xxx.js'>"
             ],
         },
         {
@@ -214,82 +244,96 @@ document.addEventListener('DOMContentLoaded', () => {
         },
     ];
 
-    const answers = [];
-    const quizQuestions = [];
-
-
+    let answers = [];
+    let quizQuestions = [];
     let score = 0;
     let currentQuestionIndex = 0;
+    let timeInterval;
 
     const welcomePage = document.getElementById('welcome-page');
     const quizPage = document.getElementById('quiz-page');
     const optionsCheck = document.getElementById('choose-difficulty');
     const optionsContainer = document.getElementById('options');
     const startCheck = document.getElementById('checkbox');
-    const finePrints = document.getElementsByClassName('fine-print');
+    const finePrint = document.getElementById('fine-print');
     const startButton = document.getElementById('btn-welcome');
     const answersContainer = document.getElementById('answers');
     const questionElement = document.getElementById('question-text');
     const questionTracker = document.getElementById('question-number');
-    const resultSection = document.getElementById('results-container');
+    const nextQuestionButton = document.getElementById('btn-next');
+    const resultSection = document.getElementById('results-page');
     const scoreElement = document.getElementById('score');
     const timeElement = document.getElementById('countdown');
 
     const loadQuestion = () => {
-        questionTracker.innerHTML = (currentQuestionIndex + 1) + "/" + questions.length;
+        answersContainer.innerHTML = '';
+        questionTracker.innerHTML = `${currentQuestionIndex + 1}/${quizQuestions.length}`;
 
-        if (currentQuestionIndex < questions.length) {
-            const currentQuestion = questions[currentQuestionIndex];
+        if (currentQuestionIndex < quizQuestions.length) {
+            const currentQuestion = quizQuestions[currentQuestionIndex];
             questionElement.innerText = currentQuestion.question;
-            const answers = [currentQuestion.correct_answer, ...currentQuestion.incorrect_answers].sort(() => Math.random() - 0.5);
+            const answers = [currentQuestion.correct_answer, ...currentQuestion.incorrect_answers.sort(() => Math.random() - 0.5).slice(0, 3)].sort(() => Math.random() - 0.5);
 
             answers.forEach(answer => {
                 const button = document.createElement('button');
                 button.innerText = answer;
-                button.addEventListener('click', () => selectAnswer(answer));
+                button.classList.add('answer-btn');
+                button.addEventListener('click', (event) => selectAnswer(event));
                 answersContainer.appendChild(button);
-
             })
+
+            nextQuestionButton.disabled = true;
             startTime();
         } else {
             showResult();
         }
     }
 
-    const selectAnswer = (selectedAnswer) => {
-        const currentQuestion = questions[currentQuestionIndex];
+    const selectAnswer = (event) => {
+        const currentQuestion = quizQuestions[currentQuestionIndex];
+        const selectedAnswer = event.target.innerText;
+
         if (selectedAnswer === currentQuestion.correct_answer) {
             score += currentQuestion.value;
-            scoreElement.innerHTML = score;
-            currentQuestionIndex++;
-            loadQuestion();
-        } else {
-            currentQuestionIndex++;
-            loadQuestion();
         }
+
+        currentQuestionIndex++;
+        nextQuestionButton.disabled = false;
     }
+
+    nextQuestionButton.addEventListener('click', () => {
+        scoreElement.innerHTML = `Score: ${score}`;
+        clearInterval(timeInterval);
+        loadQuestion();
+    })
 
     const initQuiz = (amount, difficulty) => {
         let filteredQuestions = questions.filter(question => question.difficulty === difficulty);
 
         if (amount && amount < filteredQuestions.length) {
             filteredQuestions = filteredQuestions.sort(() => Math.random() - 0.5).slice(0, amount);
-        } else {
-            filteredQuestions = filteredQuestions.sort(() => Math.random() - 0.5);
         }
 
         quizQuestions = filteredQuestions;
         score = 0;
         currentQuestionIndex = 0;
-        loadQuestion();
-        startTime();
+
+        if (quizQuestions.length > 0) {
+            loadQuestion();
+        } else {
+            console.error('No question was found.');
+        }
     }
 
     const startQuiz = () => {
         startButton.addEventListener('click', () => {
+            const difficulty = document.getElementById('difficulty').value;
+            const amount = parseInt(document.getElementById('amount').value, 10);
             welcomePage.classList.add('hidden');
             timeElement.classList.remove('hidden');
             quizPage.classList.remove('hidden');
+
+            initQuiz(amount, difficulty);
         })
     }
 
@@ -301,6 +345,8 @@ document.addEventListener('DOMContentLoaded', () => {
 
         resultSection.classList.remove('hidden');
         quizPage.classList.add('hidden');
+        timeElement.classList.add('hidden');
+        clearInterval(timeInterval);
         resultSection.innerHTML = `
             <h1>Results</h1>
             <p>The summary of your answers:</p>
@@ -308,7 +354,7 @@ document.addEventListener('DOMContentLoaded', () => {
                 <div>
                     <h2>Correct</h2>
                     <p>${correctPercentage.toFixed(1)}%</p>
-                    <p>${correctAnswers}/${quizQuestions.length} questions</p>
+                    <p>${correctAnswers}/${quizQuestions.length} quizQuestions</p>
                 </div>
                 <div>
                     <span>
@@ -318,7 +364,7 @@ document.addEventListener('DOMContentLoaded', () => {
                 <div>
                     <h2>Wrong</h2>
                     <p>${wrongPercentage.toFixed(1)}%</p>
-                    <p>${wrongAnswers}/${quizQuestions.length} questions</p>
+                    <p>${wrongAnswers}/${quizQuestions.length} quizQuestions</p>
                 </div>
             </div>
         `;
@@ -326,33 +372,35 @@ document.addEventListener('DOMContentLoaded', () => {
 
     const showOptions = () => {
        optionsCheck.addEventListener('change', () => {
-            optionsContainer.classList.remove = 'hidden';
+            if (optionsCheck.checked) {
+                optionsContainer.classList.remove('hidden');
+            } else {
+                optionsContainer.classList.add('hidden');
+            }
         })
     }
 
     const enableStart = () => {
         startCheck.addEventListener('change', () => {
             startButton.disabled = !startCheck.checked;
-            hideFinePrints();
-        })
-    }
-
-    const hideFinePrints = () => {
-        startCheck.addEventListener('change', () => {
-            finePrints.style.display = 'none';
+            finePrint.style.display = finePrint.style.display === 'none' ? 'block' : 'none';
         })
     }
 
     const startTime = () => {
-        const currentQuestion = questions[currentQuestionIndex];
+        const currentQuestion = quizQuestions[currentQuestionIndex];
         let time = currentQuestion.time;
         timeElement.innerText = time;
-        const timeInterval = setInterval(() => {
+
+        clearInterval(timeInterval);
+
+        timeInterval = setInterval(() => {
             time--;
             timeElement.innerText = time;
             if (time <= 0) {
                 clearInterval(timeInterval)
-                loadQuestion()
+                currentQuestionIndex++;
+                loadQuestion();
             }
         
         }, 1000)
@@ -360,7 +408,6 @@ document.addEventListener('DOMContentLoaded', () => {
 
     showOptions();
     enableStart();
-    initQuiz();
     startQuiz();
 
 });
