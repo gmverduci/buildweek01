@@ -16,15 +16,27 @@
                 <h1>Results</h1>
                 <p>The summary of your answer:</p>
             </div>
-            <div id="results-data">
-                <div class="results-central"></div>
-                <div class="results-central"></div>
-                <div class="results-central"></div>
+            <div id="results-data" style="display: inline-block; text-align:center">
+                <div class="results-central"> <span>giuste</span></div>
+                <div class="results-central" style=" width: 500px;  height:500px;   text-align:center">
+                     <canvas id="myChart"  ></canvas>
+                      <span style="position: relative; top:-48%; " >Congratulations! <br><b>You passrd the exam.</b> </span>
+                </div>
+                
+                <div class="results-central"><span>sbagliate</span></div>
             </div>
         </div>
         <div>
             <button type="button" class="trasparente" id="btn-rateUs">RATE US</button>
         </div>
+
+
+  
     </main>
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <script src="assets/scripts/chart.js"></script>
+    
+    
+
 </body>
 </html>
