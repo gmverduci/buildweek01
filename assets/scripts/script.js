@@ -244,16 +244,21 @@ document.addEventListener('DOMContentLoaded', () => {
         },
     ];
 
-    let answers = [];
+    let correctAnswers = [];
     let quizQuestions = [];
     let score = 0;
     let currentQuestionIndex = 0;
     let timeInterval;
+    let data = [];
+    let rating = 0;
 
     const welcomePage = document.getElementById('welcome-page');
     const quizPage = document.getElementById('quiz-page');
     const optionsCheck = document.getElementById('choose-difficulty');
     const optionsContainer = document.getElementById('options');
+    const difficultyMenu = document.getElementById('difficulty');
+    const questionAmount = document.getElementById('amount');
+    const rangeOutput = document.getElementById('range-output');
     const startCheck = document.getElementById('checkbox');
     const finePrint = document.getElementById('fine-print');
     const startButton = document.getElementById('btn-welcome');
@@ -264,9 +269,21 @@ document.addEventListener('DOMContentLoaded', () => {
     const resultSection = document.getElementById('results-page');
     const scoreElement = document.getElementById('score');
     const timeElement = document.getElementById('countdown');
+    const ctx = document.getElementById('my-chart');
+    const correctData = document.getElementById('correct-data');
+    const wrongData = document.getElementById('wrong-data');
+    const testResult = document.getElementById('test-result');
+    const rateUsButton = document.getElementById('rate-us-btn');
+    const feedbackPage = document.getElementById('feedback-page');
+    const stars = document.getElementsByClassName('stars');
+    const starsContainer = document.getElementById('feedback-stars');
+    const feedbackButton = document.getElementById('feedback-btn');
+    const thankyouPage = document.getElementById('thankyou-page');
+    const thankyouButton = document.getElementById('thankyou-btn');
 
     const loadQuestion = () => {
         answersContainer.innerHTML = '';
+        scoreElement.innerHTML = `Score: ${score}`;
         questionTracker.innerHTML = `${currentQuestionIndex + 1}/${quizQuestions.length}`;
 
         if (currentQuestionIndex < quizQuestions.length) {
@@ -293,16 +310,16 @@ document.addEventListener('DOMContentLoaded', () => {
         const currentQuestion = quizQuestions[currentQuestionIndex];
         const selectedAnswer = event.target.innerText;
 
-        if (selectedAnswer === currentQuestion.correct_answer) {
-            score ++;
+        if (selectedAnswer === currentQuestion.correct_answer && !correctAnswers.includes(selectedAnswer)) {
+            correctAnswers.push(selectedAnswer);
+            score++;
         }
 
-        currentQuestionIndex++;
         nextQuestionButton.disabled = false;
     }
 
     nextQuestionButton.addEventListener('click', () => {
-        scoreElement.innerHTML = `Score: ${score}`;
+        currentQuestionIndex++;
         clearInterval(timeInterval);
         loadQuestion();
     })
@@ -344,12 +361,28 @@ document.addEventListener('DOMContentLoaded', () => {
         let wrongPercentage = 100 - correctPercentage;
         let correctAnswers = score;
         let wrongAnswers = quizQuestions.length - correctAnswers;
+        data.push(wrongAnswers.toFixed(0), correctAnswers.toFixed(0));
 
         resultSection.classList.remove('hidden');
+        rateUsButton.classList.remove('hidden');
         quizPage.classList.add('hidden');
         timeElement.classList.add('hidden');
         clearInterval(timeInterval);
-        resultSection.innerHTML = `
+        correctData.innerHTML = `
+            <h2>Correct</h2>
+            <p>${correctPercentage.toFixed(1)}%</p>
+            <p>${correctAnswers}/${quizQuestions.length} questions</p>
+        `;
+        wrongData.innerHTML = `
+            <h2>Wrong</h2>
+            <p>${wrongPercentage.toFixed(1)}%</p>
+            <p>${wrongAnswers}/${quizQuestions.length} questions</p>
+        `;
+        testResult.innerHTML = `
+            ${correctPercentage >= 60 ? "Congratulations!<br>You passed the exam." : "Unfortunately,<br>You did not pass the exam."}
+        `;
+
+        /* resultSection.innerHTML = `
             <h1>Results</h1>
             <p>The summary of your answers:</p>
             <div>
@@ -369,11 +402,19 @@ document.addEventListener('DOMContentLoaded', () => {
                     <p>${wrongAnswers}/${quizQuestions.length} quizQuestions</p>
                 </div>
             </div>
-        `;
+        `; */
     }
 
+    rateUsButton.addEventListener('click', () => {
+        resultSection.classList.add('hidden');
+        rateUsButton.classList.add('hidden');
+        feedbackPage.classList.remove('hidden');
+    })
+
+    
+
     const showOptions = () => {
-       optionsCheck.addEventListener('change', () => {
+        optionsCheck.addEventListener('change', () => {
             if (optionsCheck.checked) {
                 optionsContainer.classList.remove('hidden');
             } else {
@@ -404,12 +445,106 @@ document.addEventListener('DOMContentLoaded', () => {
                 currentQuestionIndex++;
                 loadQuestion();
             }
-        
+
         }, 1000)
     }
+
+    new Chart(ctx, {
+        type: 'doughnut',
+        data: {
+            labels: [],
+            datasets: [{
+                label: 'Total',
+                data: data,
+                backgroundColor: [
+                    '#d20094',
+                    '#00ffff'],
+                borderWidth: 0,
+
+
+            }]
+        },
+        options: {
+            cutout: 175,
+        }
+    });
+
+    const mouseOver = () => {
+        for (let i = 0; i < stars.length; i++) {
+            stars[i].addEventListener('mouseover', () => {
+                starsLightOn(i);
+            })
+        }
+    }
+
+    const starsLightOn = (index) => {
+        for (let i = 0; i < stars.length; i++) {
+            if (i <= index) {
+
+                stars[i].style.fill = '#00FFFF';
+
+            } else {
+
+                stars[i].style.fill = '#0A113B';
+
+            }
+
+        }
+    }
+
+    const mouseLeave = () => {
+        starsContainer.addEventListener('mouseleave', () => {
+            updateStars(rating);
+        })
+    }
+
+    const updateStars = (rating) => {
+        for (let i = 0; i < stars.length; i++) {
+            stars[i].style.fill = i < rating ? '#00FFFF' : '#0A113B';
+        }
+    }
+
+    const handleStarClick = (index) => { 
+        rating = index + 1;
+        updateStars(rating);
+    }
+
+    Array.from(stars).forEach((star, index) => {
+        star.addEventListener('click', () => {
+            handleStarClick(index);
+        })
+    })
+
+    feedbackButton.addEventListener('click', () => {
+        feedbackPage.classList.add('hidden');
+        thankyouPage.classList.remove('hidden');
+    })
+
+    thankyouButton.addEventListener('click', () => {
+        thankyouPage.classList.add('hidden');
+        welcomePage.classList.remove('hidden');
+        optionsContainer.classList.add('hidden');
+        startButton.disabled = true;
+        correctAnswers = [];
+        quizQuestions = [];
+        score = 0;
+        currentQuestionIndex = 0;
+        rating = 0;
+        ctx.labels = [];
+        data = [];
+        startCheck.checked = false;
+        optionsCheck.checked = false;
+        difficultyMenu.value = 'default';
+        questionAmount.value = 10;
+        finePrint.style.display = 'block';
+        rangeOutput.value = 10;
+    })
 
     showOptions();
     enableStart();
     startQuiz();
+    handleStarClick();
+    mouseOver();
+    mouseLeave();
 
 });
