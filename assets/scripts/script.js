@@ -251,6 +251,7 @@ document.addEventListener('DOMContentLoaded', () => {
     let timeInterval;
     let data = [];
     let rating = 0;
+    let chart;
 
     const welcomePage = document.getElementById('welcome-page');
     const quizPage = document.getElementById('quiz-page');
@@ -269,7 +270,7 @@ document.addEventListener('DOMContentLoaded', () => {
     const resultSection = document.getElementById('results-page');
     const scoreElement = document.getElementById('score');
     const timeElement = document.getElementById('countdown');
-    const ctx = document.getElementById('my-chart');
+    const ctx = document.getElementById('my-chart').getContext('2d');
     const correctData = document.getElementById('correct-data');
     const wrongData = document.getElementById('wrong-data');
     const testResult = document.getElementById('test-result');
@@ -362,6 +363,7 @@ document.addEventListener('DOMContentLoaded', () => {
         let correctAnswers = score;
         let wrongAnswers = quizQuestions.length - correctAnswers;
         data.push(wrongAnswers.toFixed(0), correctAnswers.toFixed(0));
+        createOrUpdateChart(data);
 
         resultSection.classList.remove('hidden');
         rateUsButton.classList.remove('hidden');
@@ -449,25 +451,27 @@ document.addEventListener('DOMContentLoaded', () => {
         }, 1000)
     }
 
-    new Chart(ctx, {
-        type: 'doughnut',
-        data: {
-            labels: [],
-            datasets: [{
-                label: 'Total',
-                data: data,
-                backgroundColor: [
-                    '#d20094',
-                    '#00ffff'],
-                borderWidth: 0,
-
-
-            }]
-        },
-        options: {
-            cutout: 175,
+    const createOrUpdateChart = (data) => {
+        if (chart) {
+            chart.destroy();
         }
-    });
+
+        chart = new Chart(ctx, {
+            type: 'doughnut',
+            data: {
+                labels: ['Wrong', 'Correct'],
+                datasets: [{
+                    label: 'Total',
+                    data: data,
+                    backgroundColor: ['#d20094', '#00ffff'],
+                    borderWidth: 0,
+                }]
+            },
+            options: {
+                cutout: 175,
+            }
+        });
+    }
 
     const mouseOver = () => {
         for (let i = 0; i < stars.length; i++) {
@@ -530,7 +534,6 @@ document.addEventListener('DOMContentLoaded', () => {
         score = 0;
         currentQuestionIndex = 0;
         rating = 0;
-        ctx.labels = [];
         data = [];
         startCheck.checked = false;
         optionsCheck.checked = false;
