@@ -283,6 +283,7 @@ document.addEventListener('DOMContentLoaded', () => {
 
     const loadQuestion = () => {
         answersContainer.innerHTML = '';
+        scoreElement.innerHTML = `Score: ${score}`;
         questionTracker.innerHTML = `${currentQuestionIndex + 1}/${quizQuestions.length}`;
 
         if (currentQuestionIndex < quizQuestions.length) {
@@ -318,7 +319,6 @@ document.addEventListener('DOMContentLoaded', () => {
     }
 
     nextQuestionButton.addEventListener('click', () => {
-        scoreElement.innerHTML = `Score: ${score}`;
         currentQuestionIndex++;
         clearInterval(timeInterval);
         loadQuestion();
