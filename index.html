@@ -89,15 +89,18 @@
             <div id="results-container">
                 <h1>Results</h1>
                 <p>The summary of your answers: </p>
-                <div id="results-data" style="display: inline-block; text-align:center">
-                    <div class="results-central"> <span id="correct-data"></span></div>
-                    <div class="results-central" style=" width: 500px;  height:500px;   text-align:center">
+                <div id="results-data">
+                    <div id="correct-data"></div>
+                    <div id="results-central">
                         <canvas id="my-chart"></canvas>
-                        <span style="position: relative; top:-48%;" id="test-result"></span>
+                        <p id="test-result"></p>
                     </div>
 
-                    <div class="results-central"><span id="wrong-data"></span></div>
+                    <div id="wrong-data"></div>
                 </div>
+            </div>
+            <div id="rate-us-container" class="hidden">
+                <button type="button" id="rate-us-btn">RATE US</button>
             </div>
         </div>
 

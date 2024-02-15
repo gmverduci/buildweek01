@@ -275,6 +275,7 @@ document.addEventListener('DOMContentLoaded', () => {
     const wrongData = document.getElementById('wrong-data');
     const testResult = document.getElementById('test-result');
     const rateUsButton = document.getElementById('rate-us-btn');
+    const rateUsContainer = document.getElementById('rate-us-container');
     const feedbackPage = document.getElementById('feedback-page');
     const stars = document.getElementsByClassName('stars');
     const starsContainer = document.getElementById('feedback-stars');
@@ -366,7 +367,7 @@ document.addEventListener('DOMContentLoaded', () => {
         createOrUpdateChart(data);
 
         resultSection.classList.remove('hidden');
-        rateUsButton.classList.remove('hidden');
+        rateUsContainer.classList.remove('hidden');
         quizPage.classList.add('hidden');
         timeElement.classList.add('hidden');
         clearInterval(timeInterval);
@@ -397,7 +398,7 @@ document.addEventListener('DOMContentLoaded', () => {
 
     rateUsButton.addEventListener('click', () => {
         resultSection.classList.add('hidden');
-        rateUsButton.classList.add('hidden');
+        rateUsContainer.classList.add('hidden');
         feedbackPage.classList.remove('hidden');
     })
 
@@ -456,7 +457,7 @@ document.addEventListener('DOMContentLoaded', () => {
                 }]
             },
             options: {
-                cutout: 175,
+                cutout: '70%',
             }
         });
     }
