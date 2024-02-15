@@ -1,13 +1,16 @@
 body {
-    margin: 100px;
+    margin: 0;
+    padding: 0;
     background-image: url("../img/bg.jpg");
     background-size: cover;
     height: 100vh;
     font-family: "Inter", sans-serif;
     inline-size: 1.5;
-    margin-top: 50px;
     font-size: 16px;
     color: white;
+}
+main{
+    margin: 3em;
 }
 
 h1,
@@ -15,7 +18,7 @@ h3 {
     font-family: "Outfit", sans-serif;
 }
 
-h1 {
+.welcome-section h1 {
     margin-right: 500px;
     font-size: 80px;
 }
@@ -26,10 +29,20 @@ h3 {
 
 #logo {
     width: 200px;
+    margin: 3em;
+}
+#welcome-section-middle{
+    margin-bottom: 3em;
+
+}
+
+#countdown{
+  text-align: end;
+  margin-right: 4em;
+  font-size: 1.5em;
 }
 
 .container-list {
-    /*contenitore lista*/
     padding-right: 50px;
 }
 
@@ -37,9 +50,6 @@ ul {
     padding-left: 28px;
 }
 
-.container-options {
-    margin-bottom: 70px;
-}
 
 .hidden {
     display: none;
@@ -67,11 +77,12 @@ ul {
 
 .container-checkbox {
     height: 25px;
+
 }
 
 #btn-welcome {
     height: 50px;
-    width: 100px;
+    width: 150px;
     border-radius: 5%;
     background-color: #00ffff;
     border: 0;
@@ -87,10 +98,70 @@ ul {
 #btn-welcome:enabled:hover {
     cursor: pointer;
 }
+#quiz-page{
+    text-align: center;
+    
+}
+
+#question-text{
+    padding: 0 1em;
+    font-size: 3em;
+
+}
+
+#answers{
+    padding: 1em 15em;
+}
+
+.answer-btn{
+    color: white;
+    font-size: 1.2em;
+    border-radius: 40px 40px 40px 40px;
+    opacity: 70%;
+    background-color: rgba(36, 42, 78, 0.5);
+    width: 400px;
+    height: 80px;
+    font-weight: 700;
+    margin: 1em 1em;
+    box-shadow: 0px -2px 2px 2px white;
+    
+}
+
+.answer-btn:hover, .answer-btn:focus{
+    background: linear-gradient(0deg, rgba(140,1,122,1) 0%, rgba(204,2,146,1) 100%);
+}
 
 .checkbox-text {
     padding: 10px;
 }
+
+#btn-next{
+    color: #d20094;
+    font-size: 1.5em;
+    border-radius: 40px 40px 40px 40px;
+    opacity: 70%;
+    width: 250px;
+    height: 80px;
+    font-weight: 700;
+    margin: 1em 1em;
+    box-shadow: 0px -2px 2px 2px white;
+}
+
+#btn-next-container{
+    text-align: end;
+}
+
+#question-number{
+    font-size: 1em;
+}
+
+#score{
+    font-size: 1.5em;
+    font-weight: 700;
+
+}
+
+
 
 #fine-print {
     color: red;
@@ -101,3 +172,4 @@ ul {
 .stars:hover {
     cursor: pointer;
 }
+

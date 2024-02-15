@@ -430,7 +430,7 @@ document.addEventListener('DOMContentLoaded', () => {
         })
     }
 
-    const startTime = () => {
+   const startTime = () => {
         const currentQuestion = quizQuestions[currentQuestionIndex];
         let time = currentQuestion.time;
         timeElement.innerText = time;

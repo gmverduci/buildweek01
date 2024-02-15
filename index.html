@@ -14,7 +14,9 @@
 <body>
     <header>
         <img src="assets/img/epicode_logo.png" id="logo" alt="logo" />
-        <div class="trasparente hidden" id="countdown"></div>
+        
+            <div class="trasparente hidden" id="countdown"></div>
+        
     </header>
     <main>
         <div id="welcome-page">
@@ -36,7 +38,7 @@
                     </ul>
                 </div>
             </section>
-            <section class="welcome-section">
+            <section id="welcome-section-middle" class="welcome-section">
                 <div class="container-checkbox container-options">
                     <div class="checkbox">
                         <input type="checkbox" class="checkbox" id="choose-difficulty" />
@@ -67,7 +69,7 @@
                         <input type="checkbox" id="checkbox" />
                     </div>
                     <span class="checkbox-text">I promise to answer myself without help from anyone</span>
-                    <button type="button" id="btn-welcome" disabled>NEXT</button>
+                    <button type="button" id="btn-welcome" disabled>PROCEED</button>
                 </div>
                 <p id="fine-print">Requested field</p>
             </section>
@@ -75,11 +77,13 @@
 
         <div id="quiz-page" class="hidden">
             <div id="question-container">
-                <div id="question-text"></div>
+                <h1 id="question-text"></h1>
                 <div id="answers">
                     <!-- bottoni di input risposte -->
                 </div>
-                <button id="btn-next" disabled>NEXT</button>
+                <div id="btn-next-container">
+                    <button id="btn-next" disabled>NEXT</button>
+                </div>
             </div>
             <div id="question-number"></div>
             <div id="score"></div>
