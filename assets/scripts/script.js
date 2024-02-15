@@ -384,27 +384,15 @@ document.addEventListener('DOMContentLoaded', () => {
             ${correctPercentage >= 60 ? "Congratulations!<br>You passed the exam." : "Unfortunately,<br>You did not pass the exam."}
         `;
 
-        /* resultSection.innerHTML = `
-            <h1>Results</h1>
-            <p>The summary of your answers:</p>
-            <div>
-                <div>
-                    <h2>Correct</h2>
-                    <p>${correctPercentage.toFixed(1)}%</p>
-                    <p>${correctAnswers}/${quizQuestions.length} quizQuestions</p>
-                </div>
-                <div>
-                    <span>
-                    ${correctPercentage >= 60 ? "Congratulations!<br>You passed the exam." : "Unfortunately,<br>You did not pass the exam."}
-                    </span>
-                </div>
-                <div>
-                    <h2>Wrong</h2>
-                    <p>${wrongPercentage.toFixed(1)}%</p>
-                    <p>${wrongAnswers}/${quizQuestions.length} quizQuestions</p>
-                </div>
-            </div>
-        `; */
+        if (correctPercentage >= 60) {
+            party.confetti(resultSection, {
+                count: party.variation.range(100, 150),
+                shapes: ['circle', 'square'], 
+                spread: party.variation.range(40, 50),
+                speed: party.variation.range(200, 600),
+            });
+        }
+        
     }
 
     rateUsButton.addEventListener('click', () => {
