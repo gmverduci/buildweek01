@@ -53,6 +53,11 @@ Development Team members:
 
 - At the end of the quiz, the results section displays to the user the percentage of correct and incorrect answers and a summary doughnut chart. In the center of the doughnut chart, there is a different message depending on the outcome of the quiz (score lower or higher than 60%) (required);
 
+- On the feedback page, the stars light up and turn off when the mouse passes over them. When the user clicks, the stars remain lit up until the one selected (added by Dev Team).
+
+
+
+
 
 
 ## Authors

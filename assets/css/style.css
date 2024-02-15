@@ -101,3 +101,50 @@ ul {
 .stars:hover {
     cursor: pointer;
 }
+
+#results-data {
+  text-align: center;
+  margin-top: -200px;
+}
+
+#correct-data, #wrong-data {
+  display: inline-block;
+  width: 25%;
+  font-size: 25px;
+}
+
+#results-central {
+  display: inline-block;
+  width: 45%;
+}
+canvas {
+  top: 50%;
+  transform: translateY(50%);
+  position: relative;
+}
+
+#results-central p {
+  top: 50%;
+  transform: translateY(-50%);
+  position: relative;
+}
+
+#results-container p {
+  font-size: 20px;
+}
+
+#rate-us-btn {
+  background: transparent;
+  border: 2px solid white;
+  width: 200px;
+  height: 60px;
+  font-size: 22px;
+  color: white;
+  font-weight: 700;
+  display: inline-block;
+  transform: translate(220%, 370%);
+}
+
+#rate-us-btn:hover {
+  cursor: pointer;
+}

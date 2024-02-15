@@ -465,8 +465,10 @@ document.addEventListener('DOMContentLoaded', () => {
             }]
         },
         options: {
-            cutout: 175,
-        }
+            cutout: '60%',
+            reverse: true,
+            
+        },
     });
 
     const mouseOver = () => {
