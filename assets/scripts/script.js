@@ -280,6 +280,7 @@ document.addEventListener('DOMContentLoaded', () => {
     const stars = document.getElementsByClassName('stars');
     const starsContainer = document.getElementById('feedback-stars');
     const feedbackButton = document.getElementById('feedback-btn');
+    const feedbackInput = document.getElementById('feedback-input');
     const thankyouPage = document.getElementById('thankyou-page');
     const thankyouButton = document.getElementById('thankyou-btn');
 
@@ -500,7 +501,13 @@ document.addEventListener('DOMContentLoaded', () => {
     const handleStarClick = (index) => { 
         rating = index + 1;
         updateStars(rating);
+        checkFeedbackConditions();
     }
+
+    const checkFeedbackConditions = () => {
+        const isFeedbackProvided = feedbackInput.value.trim().length > 0;
+        feedbackButton.disabled = rating === 0 || !isFeedbackProvided;
+    };
 
     Array.from(stars).forEach((star, index) => {
         star.addEventListener('click', () => {
@@ -512,6 +519,8 @@ document.addEventListener('DOMContentLoaded', () => {
         feedbackPage.classList.add('hidden');
         thankyouPage.classList.remove('hidden');
     })
+
+    feedbackInput.addEventListener('input', checkFeedbackConditions);
 
     thankyouButton.addEventListener('click', () => {
         thankyouPage.classList.add('hidden');
