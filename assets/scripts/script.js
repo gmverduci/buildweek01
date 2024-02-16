@@ -269,6 +269,7 @@ document.addEventListener('DOMContentLoaded', () => {
     const nextQuestionButton = document.getElementById('btn-next');
     const resultSection = document.getElementById('results-page');
     const scoreElement = document.getElementById('score');
+    const countdownDiv = document.getElementById('countdown-container');
     const timeContainer = document.getElementById('countdown');
     const timeElement = document.getElementById('timer');
     const ctx = document.getElementById('my-chart').getContext('2d');
@@ -353,6 +354,7 @@ document.addEventListener('DOMContentLoaded', () => {
             const difficulty = document.getElementById('difficulty').value;
             const amount = parseInt(document.getElementById('amount').value, 10);
             welcomePage.classList.add('hidden');
+            countdownDiv.classList.remove('hidden');
             timeContainer.classList.remove('hidden');
             quizPage.classList.remove('hidden');
 
@@ -371,6 +373,7 @@ document.addEventListener('DOMContentLoaded', () => {
         resultSection.classList.remove('hidden');
         rateUsContainer.classList.remove('hidden');
         quizPage.classList.add('hidden');
+        countdownDiv.classList.add('hidden');
         timeContainer.classList.add('hidden');
         clearInterval(timeInterval);
         correctData.innerHTML = `
