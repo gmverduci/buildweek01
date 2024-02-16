@@ -1,21 +1,17 @@
 document.addEventListener("DOMContentLoaded", () => {
+  // window.addEventListener("beforeunload", (event) => {
+  //     if (
+  //         !countdownDiv.classList.contains("hidden") &&
+  //         currentQuestionIndex >= 0
+  //     ) {
+  //         const message = "If you leave this page your exam will be failed!";
+  //         event.returnValue = message;
+  //         return message;
+  //     }
+  // });
 
-    // window.addEventListener("beforeunload", (event) => {
-    //     if (
-    //         !countdownDiv.classList.contains("hidden") &&
-    //         currentQuestionIndex >= 0
-    //     ) {
-    //         const message = "If you leave this page your exam will be failed!";
-    //         event.returnValue = message;
-    //         return message;
-    //     }
-    // });
-
-
-
-
-    // Array con database domande
-    // Questions database array
+  // Array con database domande
+  // Questions database array
   const questions = [
     {
       category: "HTML",
@@ -537,345 +533,365 @@ document.addEventListener("DOMContentLoaded", () => {
     },
   ];
 
-
-
-// Variabili globali
-// Global variables
+  // Variabili globali
+  // Global variables
   let correctAnswers = [];
-    let quizQuestions = [];
-    let score = 0;
-    let currentQuestionIndex = 0;
-    let timeInterval;
-    let data = [];
-    let rating = 0;
-    let chart;
+  let quizQuestions = [];
+  let score = 0;
+  let currentQuestionIndex = 0;
+  let timeInterval;
+  let data = [];
+  let rating = 0;
+  let chart;
 
-    const welcomePage = document.getElementById('welcome-page');
-    const quizPage = document.getElementById('quiz-page');
-    const optionsCheck = document.getElementById('choose-difficulty');
-    const optionsContainer = document.getElementById('options');
-    const difficultyMenu = document.getElementById('difficulty');
-    const questionAmount = document.getElementById('amount');
-    const rangeOutput = document.getElementById('range-output');
-    const startCheck = document.getElementById('checkbox');
-    const finePrint = document.getElementById('fine-print');
-    const startButton = document.getElementById('btn-welcome');
-    const answersContainer = document.getElementById('answers');
-    const questionElement = document.getElementById('question-text');
-    const questionTracker = document.getElementById('question-number');
-    const nextQuestionButton = document.getElementById('btn-next');
-    const resultSection = document.getElementById('results-page');
-    const scoreElement = document.getElementById('score');
-    const countdownDiv = document.getElementById('countdown-container');
-    const timeContainer = document.getElementById('countdown');
-    const timeElement = document.getElementById('timer');
-    const ctx = document.getElementById('my-chart').getContext('2d');
-    const correctData = document.getElementById('correct-data');
-    const wrongData = document.getElementById('wrong-data');
-    const testResult = document.getElementById('test-result');
-    const rateUsButton = document.getElementById('rate-us-btn');
-    const rateUsContainer = document.getElementById('rate-us-container');
-    const feedbackPage = document.getElementById('feedback-page');
-    const feedbackTextDiv = document.getElementById('feedback-text');
-    const stars = document.getElementsByClassName('stars');
-    const starsContainer = document.getElementById('feedback-stars');
-    const feedbackButton = document.getElementById('feedback-btn');
-    const feedbackInput = document.getElementById('feedback-input');
-    const thankyouPage = document.getElementById('thankyou-page');
-    const thankyouButton = document.getElementById('thankyou-btn');
+  const welcomePage = document.getElementById("welcome-page");
+  const quizPage = document.getElementById("quiz-page");
+  const optionsCheck = document.getElementById("choose-difficulty");
+  const optionsContainer = document.getElementById("options");
+  const difficultyMenu = document.getElementById("difficulty");
+  const questionAmount = document.getElementById("amount");
+  const rangeOutput = document.getElementById("range-output");
+  const startCheck = document.getElementById("checkbox");
+  const finePrint = document.getElementById("fine-print");
+  const startButton = document.getElementById("btn-welcome");
+  const answersContainer = document.getElementById("answers");
+  const questionElement = document.getElementById("question-text");
+  const questionTracker = document.getElementById("question-number");
+  const nextQuestionButton = document.getElementById("btn-next");
+  const resultSection = document.getElementById("results-page");
+  const scoreElement = document.getElementById("score");
+  const countdownDiv = document.getElementById("countdown-container");
+  const timeContainer = document.getElementById("countdown");
+  const timeElement = document.getElementById("timer");
+  const ctx = document.getElementById("my-chart").getContext("2d");
+  const correctData = document.getElementById("correct-data");
+  const wrongData = document.getElementById("wrong-data");
+  const testResult = document.getElementById("test-result");
+  const rateUsButton = document.getElementById("rate-us-btn");
+  const rateUsContainer = document.getElementById("rate-us-container");
+  const feedbackPage = document.getElementById("feedback-page");
+  const feedbackTextDiv = document.getElementById("feedback-text");
+  const stars = document.getElementsByClassName("stars");
+  const starsContainer = document.getElementById("feedback-stars");
+  const feedbackButton = document.getElementById("feedback-btn");
+  const feedbackInput = document.getElementById("feedback-input");
+  const thankyouPage = document.getElementById("thankyou-page");
+  const thankyouButton = document.getElementById("thankyou-btn");
 
-    const showOptions = () => {
-        optionsCheck.addEventListener('change', () => {
-            if (optionsCheck.checked) {
-                optionsContainer.classList.remove('hidden');
-            } else {
-                optionsContainer.classList.add('hidden');
-            }
-        })
+  // Mostra le opzioni per selezionare difficoltà del quiz e numero di domande nella Welcome Page
+  // Show the options to select quiz difficulty and number of questions on the Welcome Page
+  const showOptions = () => {
+    optionsCheck.addEventListener("change", () => {
+      if (optionsCheck.checked) {
+        optionsContainer.classList.remove("hidden");
+      } else {
+        optionsContainer.classList.add("hidden");
+      }
+    });
+  };
+
+  // Abilita il button PROCEED una volta flaggato il checkbox e aggiunge un addEventListener al checkbox, che mostrerà o meno l'avviso 'Requested field'
+  // Enable the PROCEED button once the checkbox is checked and add an event listener to the checkbox, which will show or hide the 'Requested field' warning
+  const enableStart = () => {
+    startCheck.addEventListener("change", () => {
+      startButton.disabled = !startCheck.checked;
+      finePrint.style.display =
+        finePrint.style.display === "none" ? "block" : "none";
+    });
+  };
+
+  // Inizializza il quiz: resetta tutti i valori (score, quizQuestions). Crea l'array in base ai parametri amount e difficulty selezionati dall'utente in Welcome Page. Fa inoltre dei controlli per verificare se l'amount selezionato dall'utente è inferiore o superiore al numero di oggetti nel database delle domande. A questo punto fa lo shuffle degli oggetti nell'array questions.
+  // Initialize the quiz: reset all values (score, quizQuestions). Create the array based on the parameters amount and difficulty selected by the user on the Welcome Page. Also, perform checks to verify if the amount selected by the user is lower or higher than the number of items in the questions database. Then shuffle the items in the questions array.
+  const initQuiz = (amount, difficulty) => {
+    let filteredQuestions = questions.filter(
+      (question) =>
+        difficulty === "default" || question.difficulty === difficulty
+    );
+
+    if (amount && amount < filteredQuestions.length) {
+      filteredQuestions = filteredQuestions
+        .sort(() => Math.random() - 0.5)
+        .slice(0, amount);
+    } else {
+      filteredQuestions = filteredQuestions.sort(() => Math.random() - 0.5);
     }
 
-    const enableStart = () => {
-        startCheck.addEventListener('change', () => {
-            startButton.disabled = !startCheck.checked;
-            finePrint.style.display = finePrint.style.display === 'none' ? 'block' : 'none';
-        })
+    quizQuestions = filteredQuestions;
+    score = 0;
+    currentQuestionIndex = 0;
+
+    if (quizQuestions.length > 0) {
+      loadQuestion();
+    } else {
+      console.error("No question was found.");
     }
+  };
 
-    const initQuiz = (amount, difficulty) => {
-        let filteredQuestions = questions.filter(question => difficulty === 'default' || question.difficulty === difficulty);
+  // addEventListener che registra il click sul tasto che dà inizio del quiz. Registra i parametri immessi dall'utente e li passa alla funzione initQuiz. A questo punto nasconde la Welcome Page e mostra a schermo la Benchmark Page e l'elemento timer.
+  // addEventlistener that listens for the click on the button to start the quiz. Records the parameters entered by the user and passes them to the initQuiz function. Then hides the Welcome Page and displays the Benchmark Page and the timer element on the screen.
+  const startQuiz = () => {
+    startButton.addEventListener("click", () => {
+      const difficulty = document.getElementById("difficulty").value;
+      const amount = parseInt(document.getElementById("amount").value, 10);
+      welcomePage.classList.add("hidden");
+      countdownDiv.classList.remove("hidden");
+      timeContainer.classList.remove("hidden");
+      quizPage.classList.remove("hidden");
 
-        if (amount && amount < filteredQuestions.length) {
-            filteredQuestions = filteredQuestions.sort(() => Math.random() - 0.5).slice(0, amount);
-        } else {
-            filteredQuestions = filteredQuestions.sort(() => Math.random() - 0.5);
-        }
+      initQuiz(amount, difficulty);
+    });
+  };
 
-        quizQuestions = filteredQuestions;
-        score = 0;
-        currentQuestionIndex = 0;
+  // Questa funziona viene richiamata a ogni caricamento della pagina. Quando si risponde a una domanda, svuota il contenuto della pagina e lo ripopola con il contenuto della nuova domanda. Aggiorna lo score e fa un controllo sull'indice della domanda: se è minore della lunghezza dell'array questions. Ad ogni caricamento di una nuova domanda disabilita inoltre il tasto 'next', che viene riattivato quando l'utente seleziona una risposta o quando scade il tempo a disposizione. Se l'indice della domanda supera la lunghezza dell'array, richiama la funzione showResult che rimanda alla pagina dei risultati.
+  // This function is called every time the page is loaded. When answering a question, it empties the page content and repopulates it with the content of the new question. It updates the score and checks the question index: if it is less than the length of the questions array. Upon loading a new question, it also disables the 'next' button, which is reactivated when the user selects an answer or when the available time expires. If the question index exceeds the length of the array, it calls the showResult function, which redirects to the results page.
+  const loadQuestion = () => {
+    answersContainer.innerHTML = "";
+    scoreElement.innerHTML = `Score: ${score}`;
+    questionTracker.innerHTML = `QUESTION ${currentQuestionIndex + 1}/${
+      quizQuestions.length
+    }`;
 
-        if (quizQuestions.length > 0) {
-            loadQuestion();
-        } else {
-            console.error('No question was found.');
-        }
+    if (currentQuestionIndex < quizQuestions.length) {
+      const currentQuestion = quizQuestions[currentQuestionIndex];
+      questionElement.innerText = currentQuestion.question;
+      const answers = [
+        currentQuestion.correct_answer,
+        ...currentQuestion.incorrect_answers
+          .sort(() => Math.random() - 0.5)
+          .slice(0, 3),
+      ].sort(() => Math.random() - 0.5);
+
+      answers.forEach((answer) => {
+        const button = document.createElement("button");
+        button.innerText = answer;
+        button.classList.add("answer-btn");
+        button.addEventListener("click", (event) => selectAnswer(event));
+        answersContainer.appendChild(button);
+      });
+
+      nextQuestionButton.disabled = true;
+      startTime();
+    } else {
+      showResult();
     }
+  };
 
-    const startQuiz = () => {
-        startButton.addEventListener('click', () => {
-            const difficulty = document.getElementById('difficulty').value;
-            const amount = parseInt(document.getElementById('amount').value, 10);
-            welcomePage.classList.add('hidden');
-            countdownDiv.classList.remove('hidden');
-            timeContainer.classList.remove('hidden');
-            quizPage.classList.remove('hidden');
+  //Imposta il timer in base al valore indicato nell'oggetto domanda e stampa sullo schermo il valore corrente dei secondi rimasti a disposizione per rispondere alla domanda. A partire dal tempo massimo previsto per la domanda, setInterval diminuisce il valore di 1 ogni secondo, aggiorna il valore stampato a schermo e, una volta raggiunto lo 0, richiama clearInterval, aumenta l'indice della domanda corrente di 1 e richiama loadQuestion.
+  // Set the timer based on the value indicated in the question object and display the current value of the remaining seconds available to answer the question on the screen. Starting from the maximum time allocated for the question, setInterval decreases the value by 1 every second, updates the value displayed on the screen, and once it reaches 0, calls clearInterval, increases the current question index by 1, and calls loadQuestion again.
+  const startTime = () => {
+    const currentQuestion = quizQuestions[currentQuestionIndex];
+    let totalTime = currentQuestion.time;
+    let time = totalTime;
+    timeElement.innerHTML = time;
 
-            initQuiz(amount, difficulty);
-        })
-    }
+    const circlePath = document.querySelector(".progress-foreground");
+    const fullCircleLength = circlePath.getTotalLength();
+    circlePath.style.strokeDasharray = `${fullCircleLength} ${fullCircleLength}`;
+    circlePath.style.strokeDashoffset = fullCircleLength;
 
+    clearInterval(timeInterval);
 
-    const loadQuestion = () => {
-        answersContainer.innerHTML = '';
-        scoreElement.innerHTML = `Score: ${score}`;
-        questionTracker.innerHTML = `QUESTION ${currentQuestionIndex + 1}/${quizQuestions.length}`;
+    timeInterval = setInterval(() => {
+      time--;
+      timeElement.innerHTML = time;
+      let dashOffset = (fullCircleLength * (totalTime - time)) / totalTime;
+      circlePath.style.strokeDashoffset = fullCircleLength - dashOffset;
 
-        if (currentQuestionIndex < quizQuestions.length) {
-            const currentQuestion = quizQuestions[currentQuestionIndex];
-            questionElement.innerText = currentQuestion.question;
-            const answers = [currentQuestion.correct_answer, ...currentQuestion.incorrect_answers.sort(() => Math.random() - 0.5).slice(0, 3)].sort(() => Math.random() - 0.5);
-
-            answers.forEach(answer => {
-                const button = document.createElement('button');
-                button.innerText = answer;
-                button.classList.add('answer-btn');
-                button.addEventListener('click', (event) => selectAnswer(event));
-                answersContainer.appendChild(button);
-            })
-
-            nextQuestionButton.disabled = true;
-            startTime();
-        } else {
-            showResult();
-        }
-    }
-
-    const startTime = () => {
-        const currentQuestion = quizQuestions[currentQuestionIndex];
-        let totalTime = currentQuestion.time;
-        let time = totalTime;
-        timeElement.innerHTML = time;
-
-        const circlePath = document.querySelector('.progress-foreground');
-        const fullCircleLength = circlePath.getTotalLength();
-        circlePath.style.strokeDasharray = `${fullCircleLength} ${fullCircleLength}`;
-        circlePath.style.strokeDashoffset = fullCircleLength;
- 
-
+      if (time <= 0) {
         clearInterval(timeInterval);
-
-        timeInterval = setInterval(() => {
-            time--;
-            timeElement.innerHTML = time;
-            let dashOffset = (fullCircleLength * (totalTime - time)) / totalTime;
-            circlePath.style.strokeDashoffset = fullCircleLength - dashOffset;
-
-            if (time <= 0) {
-                clearInterval(timeInterval)
-                currentQuestionIndex++;
-                loadQuestion();
-            }
-        }, 1000)
-    }
-
-    const selectAnswer = (event) => {
-        const currentQuestion = quizQuestions[currentQuestionIndex];
-        const selectedAnswer = event.target.innerText;
-
-        if (selectedAnswer === currentQuestion.correct_answer && !correctAnswers.includes(selectedAnswer)) {
-            correctAnswers.push(selectedAnswer);
-            score++;
-        }
-
-        nextQuestionButton.disabled = false;
-    }
-
-    nextQuestionButton.addEventListener('click', () => {
         currentQuestionIndex++;
-        clearInterval(timeInterval);
         loadQuestion();
-    })
+      }
+    }, 1000);
+  };
 
-   
-    const showResult = () => {
-        let correctPercentage = (score / quizQuestions.length) * 100;
-        let wrongPercentage = 100 - correctPercentage;
-        let correctAnswers = score;
-        let wrongAnswers = quizQuestions.length - correctAnswers;
-        data.push(wrongAnswers.toFixed(0), correctAnswers.toFixed(0));
-        createOrUpdateChart(data);
+  //Registra la risposta selezionata dall'utente. Se questa corrisponde alla risposta corretta, viene pushata nell'array correctAnswers e aumenta lo score di 1 punto. Abilita il button per passare alla domanda successiva.
+  // Records the answer selected by the user. If it matches the correct answer, it is pushed into the correctAnswers array and the score is increased by 1 point. Enable 'next' button.
+  const selectAnswer = (event) => {
+    const currentQuestion = quizQuestions[currentQuestionIndex];
+    const selectedAnswer = event.target.innerText;
 
-        resultSection.classList.remove('hidden');
-        rateUsContainer.classList.remove('hidden');
-        quizPage.classList.add('hidden');
-        countdownDiv.classList.add('hidden');
-        timeContainer.classList.add('hidden');
-        clearInterval(timeInterval);
-        correctData.innerHTML = `
+    if (
+      selectedAnswer === currentQuestion.correct_answer &&
+      !correctAnswers.includes(selectedAnswer)
+    ) {
+      correctAnswers.push(selectedAnswer);
+      score++;
+    }
+
+    nextQuestionButton.disabled = false;
+  };
+
+  nextQuestionButton.addEventListener("click", () => {
+    currentQuestionIndex++;
+    clearInterval(timeInterval);
+    loadQuestion();
+  });
+
+  //Una volta finite le domande disponibili per il quiz corrente, nasconde la sezione Benchmark e mostra la sezione Risultati. Calcola il numero di risposte corrette e lo trasforma in percentuale, di conseguenza calcola anche la percentuale delle risposte errate. Mostra i risultati all'utente e il tasto per passare alla sezione successiva. Inoltre passa 'data' alla funzione che crea il grafico doughnut.
+  // Once the available questions for the current quiz are finished, showResult hides the Benchmark section and show the Results section. Calculates the number of correct answers and transform it into a percentage. Consequently, calculates the percentage of incorrect answers as well. Prints the results to the user along with the button to proceed to the next section. Additionally, this function sends 'data' to the function that creates the doughnut chart.
+  const showResult = () => {
+    let correctPercentage = (score / quizQuestions.length) * 100;
+    let wrongPercentage = 100 - correctPercentage;
+    let correctAnswers = score;
+    let wrongAnswers = quizQuestions.length - correctAnswers;
+    data.push(wrongAnswers.toFixed(0), correctAnswers.toFixed(0));
+    createOrUpdateChart(data);
+
+    resultSection.classList.remove("hidden");
+    rateUsContainer.classList.remove("hidden");
+    quizPage.classList.add("hidden");
+    countdownDiv.classList.add("hidden");
+    timeContainer.classList.add("hidden");
+    clearInterval(timeInterval);
+    correctData.innerHTML = `
             <h2 class="results-h2-correct">Correct</h2>
             <p>${correctPercentage.toFixed(1)}%</p>
             <p>${correctAnswers}/${quizQuestions.length} questions</p>
         `;
-        wrongData.innerHTML = `
+    wrongData.innerHTML = `
             <h2 class="results-h2-wrong">Wrong</h2>
             <p>${wrongPercentage.toFixed(1)}%</p>
             <p>${wrongAnswers}/${quizQuestions.length} questions</p>
         `;
-        testResult.innerHTML = `
-            ${correctPercentage >= 60 ? "<h3 class='results-h3-correct'>Congratulations!</h3>You passed the exam." : "<h3 class='results-h3-wrong'>Unfortunately,</h3>You did not pass the exam."}
+    testResult.innerHTML = `
+            ${
+              correctPercentage >= 60
+                ? "<h3 class='results-h3-correct'>Congratulations!</h3>You passed the exam."
+                : "<h3 class='results-h3-wrong'>Unfortunately,</h3>You did not pass the exam."
+            }
         `;
 
-        if (correctPercentage >= 60) {
-            party.confetti(resultSection, {
-                count: party.variation.range(100, 150),
-                shapes: ['circle', 'square'], 
-                spread: party.variation.range(40, 50),
-                speed: party.variation.range(200, 600),
-            });
-        }
-        
+    if (correctPercentage >= 60) {
+      party.confetti(resultSection, {
+        count: party.variation.range(100, 150),
+        shapes: ["circle", "square"],
+        spread: party.variation.range(40, 50),
+        speed: party.variation.range(200, 600),
+      });
+    }
+  };
+
+  rateUsButton.addEventListener("click", () => {
+    resultSection.classList.add("hidden");
+    rateUsContainer.classList.add("hidden");
+    feedbackPage.classList.remove("hidden");
+    checkFeedbackConditions();
+  });
+
+  const createOrUpdateChart = (data) => {
+    if (chart) {
+      chart.destroy();
     }
 
-    rateUsButton.addEventListener('click', () => {
-        resultSection.classList.add('hidden');
-        rateUsContainer.classList.add('hidden');
-        feedbackPage.classList.remove('hidden');
-        checkFeedbackConditions();
-    })
+    chart = new Chart(ctx, {
+      type: "doughnut",
+      data: {
+        labels: ["Wrong", "Correct"],
+        datasets: [
+          {
+            label: "Total",
+            data: data,
+            backgroundColor: ["#d20094", "#00ffff"],
+            borderWidth: 0,
+          },
+        ],
+      },
+      options: {
+        cutout: "70%",
+      },
+    });
+  };
 
-    
-
-    
-
-   
-
-    const createOrUpdateChart = (data) => {
-        if (chart) {
-            chart.destroy();
-        }
-
-        chart = new Chart(ctx, {
-            type: 'doughnut',
-            data: {
-                labels: ['Wrong', 'Correct'],
-                datasets: [{
-                    label: 'Total',
-                    data: data,
-                    backgroundColor: ['#d20094', '#00ffff'],
-                    borderWidth: 0,
-                }]
-            },
-            options: {
-                cutout: '70%',
-            }
-        });
+  const mouseOver = () => {
+    for (let i = 0; i < stars.length; i++) {
+      stars[i].addEventListener("mouseover", () => {
+        starsLightOn(i);
+      });
     }
+  };
 
-    const mouseOver = () => {
-        for (let i = 0; i < stars.length; i++) {
-            stars[i].addEventListener('mouseover', () => {
-                starsLightOn(i);
-            })
-        }
+  const starsLightOn = (index) => {
+    for (let i = 0; i < stars.length; i++) {
+      if (i <= index) {
+        stars[i].style.fill = "#00FFFF";
+      } else {
+        stars[i].style.fill = "#0A113B";
+      }
     }
+  };
 
-    const starsLightOn = (index) => {
-        for (let i = 0; i < stars.length; i++) {
-            if (i <= index) {
+  const mouseLeave = () => {
+    starsContainer.addEventListener("mouseleave", () => {
+      updateStars(rating);
+    });
+  };
 
-                stars[i].style.fill = '#00FFFF';
-
-            } else {
-
-                stars[i].style.fill = '#0A113B';
-
-            }
-
-        }
+  const updateStars = (rating) => {
+    for (let i = 0; i < stars.length; i++) {
+      stars[i].style.fill = i < rating ? "#00FFFF" : "#0A113B";
     }
+  };
 
-    const mouseLeave = () => {
-        starsContainer.addEventListener('mouseleave', () => {
-            updateStars(rating);
-        })
+  const handleStarClick = (index) => {
+    rating = index + 1;
+    updateStars(rating);
+
+    if (rating <= 8) {
+      feedbackTextDiv.classList.remove("hidden");
+      checkFeedbackConditions();
+    } else {
+      feedbackTextDiv.classList.add("hidden");
+      feedbackButton.disabled = false;
+      window.open("https://www.trustpilot.com/review/epicode.com", "_blank");
     }
+  };
 
-    const updateStars = (rating) => {
-        for (let i = 0; i < stars.length; i++) {
-            stars[i].style.fill = i < rating ? '#00FFFF' : '#0A113B';
-        }
-    }
+  const checkFeedbackConditions = () => {
+    const isFeedbackProvided = feedbackInput.value.trim().length > 0;
+    const isRatingSelected = rating > 0;
+    feedbackButton.disabled = !isFeedbackProvided || !isRatingSelected;
+  };
 
-    const handleStarClick = (index) => { 
-        rating = index + 1;
-        updateStars(rating);
-        
-        if (rating <= 8) {
-            feedbackTextDiv.classList.remove('hidden');
-            checkFeedbackConditions();
-        } else {
-            feedbackTextDiv.classList.add('hidden');
-            feedbackButton.disabled = false;
-            window.open('https://www.trustpilot.com/review/epicode.com', '_blank');
-        }
-    }
+  Array.from(stars).forEach((star, index) => {
+    star.addEventListener("click", () => {
+      handleStarClick(index);
+    });
+  });
 
-    const checkFeedbackConditions = () => {
-        const isFeedbackProvided = feedbackInput.value.trim().length > 0;
-        const isRatingSelected = rating > 0;
-        feedbackButton.disabled = !isFeedbackProvided || !isRatingSelected;
-    };
+  feedbackButton.addEventListener("click", () => {
+    feedbackPage.classList.add("hidden");
+    thankyouPage.classList.remove("hidden");
+  });
 
-    Array.from(stars).forEach((star, index) => {
-        star.addEventListener('click', () => {
-            handleStarClick(index);
-        })
-    })
+  feedbackInput.addEventListener("input", checkFeedbackConditions);
 
-    feedbackButton.addEventListener('click', () => {
-        feedbackPage.classList.add('hidden');
-        thankyouPage.classList.remove('hidden');
-    })
+  thankyouButton.addEventListener("click", () => {
+    thankyouPage.classList.add("hidden");
+    welcomePage.classList.remove("hidden");
+    optionsContainer.classList.add("hidden");
+    startButton.disabled = true;
+    correctAnswers = [];
+    quizQuestions = [];
+    score = 0;
+    currentQuestionIndex = 0;
+    rating = 0;
+    updateStars(rating);
+    data = [];
+    startCheck.checked = false;
+    optionsCheck.checked = false;
+    difficultyMenu.value = "default";
+    questionAmount.value = 10;
+    feedbackInput.value = "";
+    feedbackButton.disabled = true;
+    finePrint.style.display = "block";
+    rangeOutput.value = 10;
+  });
 
-    feedbackInput.addEventListener('input', checkFeedbackConditions);
-
-    thankyouButton.addEventListener('click', () => {
-        thankyouPage.classList.add('hidden');
-        welcomePage.classList.remove('hidden');
-        optionsContainer.classList.add('hidden');
-        startButton.disabled = true;
-        correctAnswers = [];
-        quizQuestions = [];
-        score = 0;
-        currentQuestionIndex = 0;
-        rating = 0;
-        updateStars(rating);
-        data = [];
-        startCheck.checked = false;
-        optionsCheck.checked = false;
-        difficultyMenu.value = 'default';
-        questionAmount.value = 10;
-        feedbackInput.value = '';
-        feedbackButton.disabled = true;
-        finePrint.style.display = 'block';
-        rangeOutput.value = 10;
-    })
-
-    showOptions();
-    enableStart();
-    startQuiz();
-    handleStarClick();
-    mouseOver();
-    mouseLeave();
-
+  showOptions();
+  enableStart();
+  startQuiz();
+  handleStarClick();
+  mouseOver();
+  mouseLeave();
 });
