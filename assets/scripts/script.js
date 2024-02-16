@@ -1,17 +1,15 @@
 document.addEventListener("DOMContentLoaded", () => {
+  // window.addEventListener("beforeunload", (event) => {
+  //     if (
+  //         !countdownDiv.classList.contains("hidden") &&
+  //         currentQuestionIndex >= 0
+  //     ) {
+  //         const message = "If you leave this page your exam will be failed!";
+  //         event.returnValue = message;
+  //         return message;
+  //     }
+  // });
 
-    // window.addEventListener("beforeunload", (event) => {
-    //     if (
-    //         !countdownDiv.classList.contains("hidden") &&
-    //         currentQuestionIndex >= 0
-    //     ) {
-    //         const message = "If you leave this page your exam will be failed!";
-    //         event.returnValue = message;
-    //         return message;
-    //     }
-    // });
-
-    
   const questions = [
     {
       category: "HTML",
@@ -533,7 +531,7 @@ document.addEventListener("DOMContentLoaded", () => {
     },
   ];
 
-    let correctAnswers = [];
+  let correctAnswers = [];
     let quizQuestions = [];
     let score = 0;
     let currentQuestionIndex = 0;
@@ -569,6 +567,7 @@ document.addEventListener("DOMContentLoaded", () => {
     const rateUsContainer = document.getElementById('rate-us-container');
     const feedbackPage = document.getElementById('feedback-page');
     const feedbackTextDiv = document.getElementById('feedback-text');
+    const feedbackInputDiv = document.getElementById('feedback-input-div');
     const stars = document.getElementsByClassName('stars');
     const starsContainer = document.getElementById('feedback-stars');
     const feedbackButton = document.getElementById('feedback-btn');
@@ -576,23 +575,56 @@ document.addEventListener("DOMContentLoaded", () => {
     const thankyouPage = document.getElementById('thankyou-page');
     const thankyouButton = document.getElementById('thankyou-btn');
 
-    const showOptions = () => {
-        optionsCheck.addEventListener('change', () => {
-            if (optionsCheck.checked) {
-                optionsContainer.classList.remove('hidden');
-            } else {
-                optionsContainer.classList.add('hidden');
-            }
-        })
+    const loadQuestion = () => {
+        answersContainer.innerHTML = '';
+        scoreElement.innerHTML = `Score: ${score}`;
+        questionTracker.innerHTML = `QUESTION ${currentQuestionIndex + 1}/${quizQuestions.length}`;
+
+    if (currentQuestionIndex < quizQuestions.length) {
+      const currentQuestion = quizQuestions[currentQuestionIndex];
+      questionElement.innerText = currentQuestion.question;
+      const answers = [
+        currentQuestion.correct_answer,
+        ...currentQuestion.incorrect_answers
+          .sort(() => Math.random() - 0.5)
+          .slice(0, 3),
+      ].sort(() => Math.random() - 0.5);
+
+      answers.forEach((answer) => {
+        const button = document.createElement("button");
+        button.innerText = answer;
+        button.classList.add("answer-btn");
+        button.addEventListener("click", (event) => selectAnswer(event));
+        answersContainer.appendChild(button);
+      });
+
+            nextQuestionButton.disabled = true;
+            startTime();
+        } else {
+            showResult();
+        }
     }
 
-    const enableStart = () => {
-        startCheck.addEventListener('change', () => {
-            startButton.disabled = !startCheck.checked;
-            finePrint.style.display = finePrint.style.display === 'none' ? 'block' : 'none';
+    const selectAnswer = (event) => {
+        const currentQuestion = quizQuestions[currentQuestionIndex];
+        const selectedAnswer = event.target.innerText;
 
-        })
+    if (
+      selectedAnswer === currentQuestion.correct_answer &&
+      !correctAnswers.includes(selectedAnswer)
+    ) {
+      correctAnswers.push(selectedAnswer);
+      score++;
     }
+
+    nextQuestionButton.disabled = false;
+  };
+
+    nextQuestionButton.addEventListener('click', () => {
+        currentQuestionIndex++;
+        clearInterval(timeInterval);
+        loadQuestion();
+    })
 
     const initQuiz = (amount, difficulty) => {
         let filteredQuestions = questions.filter(question => difficulty === 'default' || question.difficulty === difficulty);
@@ -627,76 +659,6 @@ document.addEventListener("DOMContentLoaded", () => {
         })
     }
 
-    const loadQuestion = () => {
-        answersContainer.innerHTML = '';
-        scoreElement.innerHTML = `Score: ${score}`;
-        questionTracker.innerHTML = `QUESTION ${currentQuestionIndex + 1}/${quizQuestions.length}`;
-
-        if (currentQuestionIndex < quizQuestions.length) {
-            const currentQuestion = quizQuestions[currentQuestionIndex];
-            questionElement.innerText = currentQuestion.question;
-            const answers = [currentQuestion.correct_answer, ...currentQuestion.incorrect_answers.sort(() => Math.random() - 0.5).slice(0, 3)].sort(() => Math.random() - 0.5);
-
-            answers.forEach(answer => {
-                const button = document.createElement('button');
-                button.innerText = answer;
-                button.classList.add('answer-btn');
-                button.addEventListener('click', (event) => selectAnswer(event));
-                answersContainer.appendChild(button);
-            })
-
-            nextQuestionButton.disabled = true;
-            startTime();
-        } else {
-            showResult();
-        }
-    }
-
-    const startTime = () => {
-        const currentQuestion = quizQuestions[currentQuestionIndex];
-        let totalTime = currentQuestion.time;
-        let time = totalTime;
-        timeElement.innerHTML = time;
-
-        const circlePath = document.querySelector('.progress-foreground');
-        const fullCircleLength = circlePath.getTotalLength();
-        circlePath.style.strokeDasharray = `${fullCircleLength} ${fullCircleLength}`;
-        circlePath.style.strokeDashoffset = fullCircleLength;
-
-        clearInterval(timeInterval);
-
-        timeInterval = setInterval(() => {
-            time--;
-            timeElement.innerHTML = time;
-            let dashOffset = (fullCircleLength * (totalTime - time)) / totalTime;
-            circlePath.style.strokeDashoffset = fullCircleLength - dashOffset;
-
-            if (time <= 0) {
-                clearInterval(timeInterval)
-                currentQuestionIndex++;
-                loadQuestion();
-            }
-        }, 1000)
-    }
-
-    const selectAnswer = (event) => {
-        const currentQuestion = quizQuestions[currentQuestionIndex];
-        const selectedAnswer = event.target.innerText;
-
-        if (selectedAnswer === currentQuestion.correct_answer && !correctAnswers.includes(selectedAnswer)) {
-            correctAnswers.push(selectedAnswer);
-            score++;
-        }
-
-        nextQuestionButton.disabled = false;
-    }
-
-    nextQuestionButton.addEventListener('click', () => {
-        currentQuestionIndex++;
-        clearInterval(timeInterval);
-        loadQuestion();
-    })
-
     const showResult = () => {
         let correctPercentage = (score / quizQuestions.length) * 100;
         let wrongPercentage = 100 - correctPercentage;
@@ -705,24 +667,28 @@ document.addEventListener("DOMContentLoaded", () => {
         data.push(wrongAnswers.toFixed(0), correctAnswers.toFixed(0));
         createOrUpdateChart(data);
 
-        resultSection.classList.remove('hidden');
-        rateUsContainer.classList.remove('hidden');
-        quizPage.classList.add('hidden');
-        countdownDiv.classList.add('hidden');
-        timeContainer.classList.add('hidden');
-        clearInterval(timeInterval);
-        correctData.innerHTML = `
+    resultSection.classList.remove("hidden");
+    rateUsContainer.classList.remove("hidden");
+    quizPage.classList.add("hidden");
+    countdownDiv.classList.add("hidden");
+    timeContainer.classList.add("hidden");
+    clearInterval(timeInterval);
+    correctData.innerHTML = `
             <h2 class="results-h2-correct">Correct</h2>
             <p>${correctPercentage.toFixed(1)}%</p>
             <p>${correctAnswers}/${quizQuestions.length} questions</p>
         `;
-        wrongData.innerHTML = `
+    wrongData.innerHTML = `
             <h2 class="results-h2-wrong">Wrong</h2>
             <p>${wrongPercentage.toFixed(1)}%</p>
             <p>${wrongAnswers}/${quizQuestions.length} questions</p>
         `;
-        testResult.innerHTML = `
-            ${correctPercentage >= 60 ? "<h3 class='results-h3-correct'>Congratulations!</h3>You passed the exam." : "<h3 class='results-h3-wrong'>Unfortunately,</h3>You did not pass the exam."}
+    testResult.innerHTML = `
+            ${
+              correctPercentage >= 60
+                ? "<h3 class='results-h3-correct'>Congratulations!</h3>You passed the exam."
+                : "<h3 class='results-h3-wrong'>Unfortunately,</h3>You did not pass the exam."
+            }
         `;
 
         if (correctPercentage >= 60) {
@@ -743,56 +709,100 @@ document.addEventListener("DOMContentLoaded", () => {
         checkFeedbackConditions();
     })
 
-    const createOrUpdateChart = (data) => {
-        if (chart) {
-            chart.destroy();
-        }
+    
 
-        chart = new Chart(ctx, {
-            type: 'doughnut',
-            data: {
-                labels: ['Wrong', 'Correct'],
-                datasets: [{
-                    label: 'Total',
-                    data: data,
-                    backgroundColor: ['#d20094', '#00ffff'],
-                    borderWidth: 0,
-                }]
-            },
-            options: {
-                cutout: '70%',
-            }
-        });
-    }
-
-    const mouseOver = () => {
-        for (let i = 0; i < stars.length; i++) {
-            stars[i].addEventListener('mouseover', () => {
-                starsLightOn(i);
-            })
-        }
-    }
-
-    const starsLightOn = (index) => {
-        for (let i = 0; i < stars.length; i++) {
-            if (i <= index) {
-
-                stars[i].style.fill = '#00FFFF';
-
+    const showOptions = () => {
+        optionsCheck.addEventListener('change', () => {
+            if (optionsCheck.checked) {
+                optionsContainer.classList.remove('hidden');
             } else {
-
-                stars[i].style.fill = '#0A113B';
-
+                optionsContainer.classList.add('hidden');
             }
-
-        }
-    }
-
-    const mouseLeave = () => {
-        starsContainer.addEventListener('mouseleave', () => {
-            updateStars(rating);
         })
     }
+
+    const enableStart = () => {
+        startCheck.addEventListener('change', () => {
+            startButton.disabled = !startCheck.checked;
+            finePrint.style.display = finePrint.style.display === 'none' ? 'block' : 'none';
+        })
+    }
+
+    const startTime = () => {
+        const currentQuestion = quizQuestions[currentQuestionIndex];
+        let totalTime = currentQuestion.time;
+        let time = totalTime;
+        timeElement.innerHTML = time;
+
+        const circlePath = document.querySelector('.progress-foreground');
+        const fullCircleLength = circlePath.getTotalLength();
+        circlePath.style.strokeDasharray = `${fullCircleLength} ${fullCircleLength}`;
+        circlePath.style.strokeDashoffset = fullCircleLength;
+ 
+
+        clearInterval(timeInterval);
+
+        timeInterval = setInterval(() => {
+            time--;
+            timeElement.innerHTML = time;
+            let dashOffset = (fullCircleLength * (totalTime - time)) / totalTime;
+            circlePath.style.strokeDashoffset = fullCircleLength - dashOffset;
+
+            if (time <= 0) {
+                clearInterval(timeInterval)
+                currentQuestionIndex++;
+                loadQuestion();
+            }
+        }, 1000)
+    }
+
+  const createOrUpdateChart = (data) => {
+    if (chart) {
+      chart.destroy();
+    }
+
+    chart = new Chart(ctx, {
+      type: "doughnut",
+      data: {
+        labels: ["Wrong", "Correct"],
+        datasets: [
+          {
+            label: "Total",
+            data: data,
+            backgroundColor: ["#d20094", "#00ffff"],
+            borderWidth: 0,
+          },
+        ],
+      },
+      options: {
+        cutout: "70%",
+      },
+    });
+  };
+
+  const mouseOver = () => {
+    for (let i = 0; i < stars.length; i++) {
+      stars[i].addEventListener("mouseover", () => {
+        starsLightOn(i);
+      });
+    }
+  };
+
+  const starsLightOn = (index) => {
+    for (let i = 0; i < stars.length; i++) {
+      if (i <= index) {
+        stars[i].style.fill = "#00FFFF";
+      } else {
+        stars[i].style.fill = "#0A113B";
+      }
+    }
+  };
+
+  const mouseLeave = () => {
+    starsContainer.addEventListener("mouseleave", () => {
+      updateStars(rating);
+    });
+  };
 
     const updateStars = (rating) => {
         for (let i = 0; i < stars.length; i++) {
@@ -800,32 +810,31 @@ document.addEventListener("DOMContentLoaded", () => {
         }
     }
 
-    Array.from(stars).forEach((star, index) => {
-        star.addEventListener('click', () => {
-            handleStarClick(index);
-        })
-    })
+  const handleStarClick = (index) => {
+    rating = index + 1;
+    updateStars(rating);
 
-
-    const handleStarClick = (index) => { 
-        rating = index + 1;
-        updateStars(rating);
-        
-        if (rating <= 8) {
-            feedbackTextDiv.classList.remove('hidden');
-            checkFeedbackConditions();
-        } else {
-            feedbackTextDiv.classList.add('hidden');
-            feedbackButton.disabled = false;
-            window.open('https://www.trustpilot.com/review/epicode.com', '_blank');
-        }
+    if (rating <= 8) {
+      feedbackTextDiv.classList.remove("hidden");
+      checkFeedbackConditions();
+    } else {
+      feedbackTextDiv.classList.add("hidden");
+      feedbackButton.disabled = false;
+      window.open("https://www.trustpilot.com/review/epicode.com", "_blank");
     }
+  };
 
     const checkFeedbackConditions = () => {
         const isFeedbackProvided = feedbackInput.value.trim().length > 0;
         const isRatingSelected = rating > 0;
         feedbackButton.disabled = !isFeedbackProvided || !isRatingSelected;
     };
+
+    Array.from(stars).forEach((star, index) => {
+        star.addEventListener('click', () => {
+            handleStarClick(index);
+        })
+    })
 
     feedbackButton.addEventListener('click', () => {
         feedbackPage.classList.add('hidden');
@@ -834,33 +843,32 @@ document.addEventListener("DOMContentLoaded", () => {
 
     feedbackInput.addEventListener('input', checkFeedbackConditions);
 
-    thankyouButton.addEventListener('click', () => {
-        thankyouPage.classList.add('hidden');
-        welcomePage.classList.remove('hidden');
-        optionsContainer.classList.add('hidden');
-        startButton.disabled = true;
-        correctAnswers = [];
-        quizQuestions = [];
-        score = 0;
-        currentQuestionIndex = 0;
-        rating = 0;
-        updateStars(rating);
-        data = [];
-        startCheck.checked = false;
-        optionsCheck.checked = false;
-        difficultyMenu.value = 'default';
-        questionAmount.value = 10;
-        feedbackInput.value = '';
-        feedbackButton.disabled = true;
-        finePrint.style.display = 'block';
-        rangeOutput.value = 10;
-    })
+  thankyouButton.addEventListener("click", () => {
+    thankyouPage.classList.add("hidden");
+    welcomePage.classList.remove("hidden");
+    optionsContainer.classList.add("hidden");
+    startButton.disabled = true;
+    correctAnswers = [];
+    quizQuestions = [];
+    score = 0;
+    currentQuestionIndex = 0;
+    rating = 0;
+    updateStars(rating);
+    data = [];
+    startCheck.checked = false;
+    optionsCheck.checked = false;
+    difficultyMenu.value = "default";
+    questionAmount.value = 10;
+    feedbackInput.value = "";
+    feedbackButton.disabled = true;
+    finePrint.style.display = "block";
+    rangeOutput.value = 10;
+  });
 
-    showOptions();
-    enableStart();
-    startQuiz();
-    handleStarClick();
-    mouseOver();
-    mouseLeave();
-
+  showOptions();
+  enableStart();
+  startQuiz();
+  handleStarClick();
+  mouseOver();
+  mouseLeave();
 });

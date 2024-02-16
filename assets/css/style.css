@@ -9,11 +9,9 @@ body {
   font-size: 16px;
   color: white;
 }
-
 main {
   margin: 3em;
 }
-
 h1,
 h3 {
   font-family: "Outfit", sans-serif;
@@ -101,6 +99,7 @@ ul {
 }
 
 #amount {
+  appearance: none;
   -webkit-appearance: none;
   background: transparent;
   width: 150px;
