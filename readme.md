@@ -2,7 +2,7 @@
 
 This project consists of a Single Page Application (SPA) that allows the user to access an exemplified version of Epicode's benchmark quiz. The logic followed during the development of this application was to envision providing a product tailored to the needs of a client requesting a platform for online testing, likely for educational purposes (although it can still be used for different purposes with minor implementations).
 
-The application was developed as a group project during the first Build Week of the Epicode FullStack Web Developer course (class FS0124-A, year 2024).
+The application has been developed as a group project during the first Build Week of the Epicode FullStack Web Developer course (class FS0124-A, year 2024).
 
 Development Team members:
 - Marcello Verduci
