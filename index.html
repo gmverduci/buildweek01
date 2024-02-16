@@ -1,8 +1,9 @@
 <!DOCTYPE html>
-<html lang="it">
+<html lang="en">
 
 <head>
     <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Build Week</title>
     <link rel="preconnect" href="https://fonts.googleapis.com%22%3E/" />
     <link rel="preconnect" href="https://fonts.gstatic.com/" crossorigin />
@@ -18,7 +19,7 @@
     </header>
     <main>
         <div id="welcome-page">
-            <section class="welcome-section">
+            <section class="welcome-section" id="welcome-section">
                 <h1>Welcome to your exam</h1>
                 <div class="container-list">
                     <h3>Instructions</h3>
@@ -67,7 +68,7 @@
                         <input type="checkbox" id="checkbox" />
                     </div>
                     <span class="checkbox-text">I promise to answer myself without help from anyone</span>
-                    <button type="button" id="btn-welcome" disabled>NEXT</button>
+                    <button type="button" id="btn-welcome" disabled>PROCEED</button>
                 </div>
                 <p id="fine-print">Requested field</p>
             </section>
@@ -75,11 +76,13 @@
 
         <div id="quiz-page" class="hidden">
             <div id="question-container">
-                <div id="question-text"></div>
+                <h1 id="question-text"></h1>
                 <div id="answers">
                     <!-- bottoni di input risposte -->
                 </div>
-                <button id="btn-next" disabled>NEXT</button>
+                <div id="btn-next-container">
+                    <button id="btn-next" disabled>NEXT</button>
+                </div>
             </div>
             <div id="question-number"></div>
             <div id="score"></div>
