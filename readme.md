@@ -58,7 +58,7 @@ Development Team members:
 
 - User Feedback Required: The button to exit the Feedback section only activates once the rating value (stars) and the textual comment with any suggestions for platform improvement have been recorded (required);
 
-- Dynamic Behavior of the Feedback Section: If the user selects a minimum rating of 8/10, the button to leave the page will be activated, and next to it, the message 'Thank you for your feedback, please tell us what you liked and what we could improve' will be displayed. Once the button is clicked, the users will be redirected to one of the major review platforms, so they can post a comment (presumibly a positive one) about the platform. In case of a lower rating, a text input field will be activated, where the user can report what they did not like. Once the user profile registration with a related contacts section is implemented, the user can be contacted by customer service to proactively address any issues (added by Dev Team);
+- Dynamic Behavior of the Feedback Section: If the user selects a minimum rating of 8/10, the button to leave the page will be activated, and next to it, the message 'Thank you for your feedback, please tell us what you liked and what we could improve' will be displayed. Once the button is clicked, the users will be redirected to one of the major review platforms, so they can post a comment (presumibly a positive one) about the platform. In case of a lower rating, a text input field will be activated, where the user can report what they did not like. Once the user profile registration with a related contacts section is implemented, customer service will be able to receive the feedback and contact the user to proactively address any issues (added by Dev Team);
 
 
 
