@@ -275,10 +275,12 @@ document.addEventListener('DOMContentLoaded', () => {
     const wrongData = document.getElementById('wrong-data');
     const testResult = document.getElementById('test-result');
     const rateUsButton = document.getElementById('rate-us-btn');
+    const rateUsContainer = document.getElementById('rate-us-container');
     const feedbackPage = document.getElementById('feedback-page');
     const stars = document.getElementsByClassName('stars');
     const starsContainer = document.getElementById('feedback-stars');
     const feedbackButton = document.getElementById('feedback-btn');
+    const feedbackInput = document.getElementById('feedback-input');
     const thankyouPage = document.getElementById('thankyou-page');
     const thankyouButton = document.getElementById('thankyou-btn');
 
@@ -366,7 +368,7 @@ document.addEventListener('DOMContentLoaded', () => {
         createOrUpdateChart(data);
 
         resultSection.classList.remove('hidden');
-        rateUsButton.classList.remove('hidden');
+        rateUsContainer.classList.remove('hidden');
         quizPage.classList.add('hidden');
         timeElement.classList.add('hidden');
         clearInterval(timeInterval);
@@ -397,7 +399,7 @@ document.addEventListener('DOMContentLoaded', () => {
 
     rateUsButton.addEventListener('click', () => {
         resultSection.classList.add('hidden');
-        rateUsButton.classList.add('hidden');
+        rateUsContainer.classList.add('hidden');
         feedbackPage.classList.remove('hidden');
     })
 
@@ -456,7 +458,7 @@ document.addEventListener('DOMContentLoaded', () => {
                 }]
             },
             options: {
-                cutout: 175,
+                cutout: '70%',
             }
         });
     }
@@ -499,7 +501,13 @@ document.addEventListener('DOMContentLoaded', () => {
     const handleStarClick = (index) => { 
         rating = index + 1;
         updateStars(rating);
+        checkFeedbackConditions();
     }
+
+    const checkFeedbackConditions = () => {
+        const isFeedbackProvided = feedbackInput.value.trim().length > 0;
+        feedbackButton.disabled = rating === 0 || !isFeedbackProvided;
+    };
 
     Array.from(stars).forEach((star, index) => {
         star.addEventListener('click', () => {
@@ -511,6 +519,8 @@ document.addEventListener('DOMContentLoaded', () => {
         feedbackPage.classList.add('hidden');
         thankyouPage.classList.remove('hidden');
     })
+
+    feedbackInput.addEventListener('input', checkFeedbackConditions);
 
     thankyouButton.addEventListener('click', () => {
         thankyouPage.classList.add('hidden');
