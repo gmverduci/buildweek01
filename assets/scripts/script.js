@@ -75,7 +75,7 @@ document.addEventListener('DOMContentLoaded', () => {
             time: 30,
             value: 1,
             question: "Which symbol is used for comments in JavaScript?",
-            correct_answer: "// for single line comments, /* */ for multi-line comments",
+            correct_answer: "// for single line, /* */ for multi-line",
             incorrect_answers: [
                 "#",
                 "<!-- -->",
@@ -242,6 +242,263 @@ document.addEventListener('DOMContentLoaded', () => {
                 "True",
             ],
         },
+        {
+            type: "multiple",
+            difficulty: "hard",
+            time: 60,
+            value: 3,
+            category: "Science: Computers",
+            question:
+              "Dutch computer scientist Mark Overmars is known for creating which game development engine?",
+            correct_answer: "Game Maker",
+            incorrect_answers: ["Stencyl", "Construct", "Torque 2D"],
+          },
+          {
+            type: "truefalse",
+            difficulty: "easy",
+            time: 30,
+            value: 1,
+            category: "Science: Computers",
+            question:
+              "The Python programming language gets its name from the British comedy group &quot;Monty Python.&quot;",
+            correct_answer: "True",
+            incorrect_answers: ["False"],
+          },
+          {
+            type: "multiple",
+            difficulty: "easy",
+            time: 30,
+            value: 1,
+            category: "Science: Computers",
+            question: "What does GHz stand for?",
+            correct_answer: "Gigahertz",
+            incorrect_answers: ["Gigahotz", "Gigahetz", "Gigahatz", "Gigatron", "Gigahigh", "Gigahot"],
+          },
+          {
+            type: "multiple",
+            difficulty: "hard",
+            time: 60,
+            value: 3,
+            category: "Science: Computers",
+            question:
+              "Which of these names was an actual codename for a cancelled Microsoft project?",
+            correct_answer: "Neptune",
+            incorrect_answers: ["Enceladus", "Ganymede", "Saturn", "Venus", "Pluto", "Europa"],
+          },
+          {
+            type: "multiple",
+            difficulty: "easy",
+            time: 30,
+            value: 1,
+            category: "Science: Computers",
+            question: "What amount of bits commonly equals one byte?",
+            correct_answer: "8",
+            incorrect_answers: ["1", "2", "64", "18", "28", "12"],
+          },
+          {
+            type: "multiple",
+            difficulty: "medium",
+            time: 45,
+            value: 2,
+            category: "Science: Computers",
+            question: "How many cores does the Intel i7-6950X have?",
+            correct_answer: "10",
+            incorrect_answers: ["12", "8", "4", "2", "6", "1"],
+          },
+          {
+            type: "multiple",
+            difficulty: "easy",
+            time: 30,
+            value: 1,
+            category: "Science: Computers",
+            question: "What does CPU stand for?",
+            correct_answer: "Central Processing Unit",
+            incorrect_answers: [
+              "Central Process Unit",
+              "Computer Personal Unit",
+              "Central Processor Unit",
+              "Chip Processor Unit",
+              "Control Processing Unit",
+              "Control Processor Unit"
+            ],
+          },
+          {
+            type: "multiple",
+            difficulty: "easy",
+            time: 30,
+            value: 1,
+            category: "Science: Computers",
+            question: "What does the Prt Sc button do?",
+            correct_answer:
+              "Captures what&#039;s on the screen and copies it to your clipboard",
+            incorrect_answers: [
+              "Nothing",
+              "Saves a .png file of what&#039;s on the screen",
+              "Closes all windows",
+              "Strange noises",
+              "Change screen",
+              "Go to printer settings"
+            ],
+          },
+          {
+            type: "multiple",
+            difficulty: "easy",
+            time: 30,
+            value: 1,
+            category: "Science: Computers",
+            question:
+              "What is the most preferred image format used for logos in the Wikimedia database?",
+            correct_answer: ".svg",
+            incorrect_answers: [".png", ".jpeg", ".gif", ".tiff", ".doc", ".raw"],
+          },
+          {
+            type: "truefalse",
+            difficulty: "easy",
+            time: 30,
+            value: 1,
+            category: "Science: Computers",
+            question: "Linux was first created as an alternative to Windows XP.",
+            correct_answer: "False",
+            incorrect_answers: ["True"],
+          },
+          {
+            type: "truefalse",
+            difficulty: "easy",
+            time: 30,
+            value: 1,
+            category: "Science: Computers",
+            question: "RAM stands for Random Access Memory.",
+            correct_answer: "True",
+            incorrect_answers: ["False"],
+          },
+          {
+            type: "truefalse",
+            difficulty: "easy",
+            time: 30,
+            value: 1,
+            category: "Science: Computers",
+            question: "Ada Lovelace is often considered the first computer programmer.",
+            correct_answer: "True",
+            incorrect_answers: ["False"],
+          },
+          {
+            type: "multiple",
+            difficulty: "easy",
+            time: 30,
+            value: 1,
+            category: "Science: Computers",
+            question:
+              "The programming language &#039;Swift&#039; was created to replace what other programming language?",
+            correct_answer: "Objective-C",
+            incorrect_answers: ["C#", "Ruby", "C++", "Java", "Basic", "Fortran"],
+          },
+          {
+            type: "multiple",
+            difficulty: "medium",
+            time: 45,
+            value: 2,
+            category: "Science: Computers",
+            question: "What is the main CPU is the Sega Mega Drive / Sega Genesis?",
+            correct_answer: "Motorola 68000",
+            incorrect_answers: ["Zilog Z80", "Yamaha YM2612", "Intel 8088", "AMD 1240", "Intel Core Duo", "AMD Athlon II"],
+          },
+          {
+            type: "multiple",
+            difficulty: "medium",
+            time: 45,
+            value: 2,
+            category: "Science: Computers",
+            question: "On which computer hardware device is the BIOS chip located?",
+            correct_answer: "Motherboard",
+            incorrect_answers: [
+              "Hard Disk Drive",
+              "Central Processing Unit",
+              "Graphics Processing Unit",
+              "Random Access Memory",
+              "NVME M.2 Drive",
+              "Fans controller"
+            ],
+          },
+          {
+            type: "truefalse",
+            difficulty: "medium",
+            time: 45,
+            value: 2,
+            category: "Science: Computers",
+            question: "The first dual-core CPU was the Intel Pentium D.",
+            correct_answer: "False",
+            incorrect_answers: ["True"],
+          },
+          {
+            type: "multiple",
+            difficulty: "easy",
+            time: 30,
+            value: 1,
+            category: "Science: Computers",
+            question: "In computing, what does LAN stand for?",
+            correct_answer: "Local Area Network",
+            incorrect_answers: [
+              "Long Antenna Node",
+              "Light Access Node",
+              "Land Address Navigation",
+              "Large Area Network",
+              "Localized Access Node",
+              "Limited Access Nexus"
+            ],
+          },
+          {
+            type: "multiple",
+            difficulty: "hard",
+            time: 60,
+            value: 3,
+            category: "Science: Computers",
+            question:
+              "According to DeMorgan&#039;s Theorem, the Boolean expression (AB)&#039; is equivalent to:",
+            correct_answer: "A&#039; + B&#039;",
+            incorrect_answers: [
+              "A&#039;B + B&#039;A",
+              "A&#039;B&#039;",
+              "AB&#039; + AB",
+              "A&#39;C&#39;",
+              "AB(&#039; + &#039);",
+              "A&*39; + B&*39;",
+
+            ],
+          },
+          {
+            type: "multiple",
+            difficulty: "medium",
+            time: 45,
+            value: 2,
+            category: "Science: Computers",
+            question: "In the server hosting industry IaaS stands for...",
+            correct_answer: "Infrastructure as a Service",
+            incorrect_answers: [
+              "Internet as a Service",
+              "Internet and a Server",
+              "Infrastructure as a Server",
+              "Infrastructure as a Service",
+              "Internet-based Application Service",
+              "Integrated Automation Solution"
+            ],
+          },
+          {
+            type: "multiple",
+            difficulty: "hard",
+            time: 60,
+            value: 3,
+            category: "Science: Computers",
+            question: "What vulnerability ranked #1 on the OWASP Top 10 in 2013?",
+            correct_answer: "Injection ",
+            incorrect_answers: [
+              "Broken Authentication",
+              "Cross-Site Scripting",
+              "Insecure Direct Object References",
+              "Homebanking Tokens",
+              "USB Drive Malwares",
+              "DDOS Attacks"
+            ],
+          },
     ];
 
     let correctAnswers = [];
@@ -546,7 +803,7 @@ document.addEventListener('DOMContentLoaded', () => {
         currentQuestionIndex = 0;
         rating = 0;
         data = [];
-        startCheck.checked = false;
+        startCheck.checke = false;
         optionsCheck.checked = false;
         difficultyMenu.value = 'default';
         questionAmount.value = 10;
