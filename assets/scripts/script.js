@@ -1,15 +1,4 @@
 document.addEventListener("DOMContentLoaded", () => {
-//   window.addEventListener("beforeunload", function (event) {
-//     if (
-//       !countdownDiv.classList.contains("hidden") &&
-//       currentQuestionIndex >= 0
-//     ) {
-//       const message = "If you leave this page your exam will be failed!";
-//       event.returnValue = message;
-//       return message;
-//     }
-//   });
-
   const questions = [
     {
       category: "HTML",

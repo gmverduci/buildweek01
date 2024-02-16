@@ -121,12 +121,12 @@ input[type="range"]::-moz-range-track {
 }
 
 input[type="range"]::-webkit-slider-thumb {
-  -webkit-appearance: none; 
+  -webkit-appearance: none;
   appearance: none;
-  margin-top: -7px; 
+  margin-top: -7px;
   background-color: #00ffff;
   height: 1.5rem;
-  width: 0.7rem;    
+  width: 0.7rem;
 }
 
 #middle-section-container {
@@ -388,7 +388,8 @@ canvas {
   margin-top: 15em;
 }
 
-#feedback-page, #thankyou-page {
+#feedback-page,
+#thankyou-page {
   text-align: center;
 }
 
