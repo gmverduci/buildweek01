@@ -11,6 +11,7 @@ document.addEventListener("DOMContentLoaded", () => {
     //     }
     // });
 
+    
   const questions = [
     {
       category: "HTML",
@@ -532,7 +533,7 @@ document.addEventListener("DOMContentLoaded", () => {
     },
   ];
 
-  let correctAnswers = [];
+    let correctAnswers = [];
     let quizQuestions = [];
     let score = 0;
     let currentQuestionIndex = 0;
@@ -568,7 +569,6 @@ document.addEventListener("DOMContentLoaded", () => {
     const rateUsContainer = document.getElementById('rate-us-container');
     const feedbackPage = document.getElementById('feedback-page');
     const feedbackTextDiv = document.getElementById('feedback-text');
-    const feedbackInputDiv = document.getElementById('feedback-input-div');
     const stars = document.getElementsByClassName('stars');
     const starsContainer = document.getElementById('feedback-stars');
     const feedbackButton = document.getElementById('feedback-btn');
@@ -576,48 +576,23 @@ document.addEventListener("DOMContentLoaded", () => {
     const thankyouPage = document.getElementById('thankyou-page');
     const thankyouButton = document.getElementById('thankyou-btn');
 
-    const loadQuestion = () => {
-        answersContainer.innerHTML = '';
-        scoreElement.innerHTML = `Score: ${score}`;
-        questionTracker.innerHTML = `QUESTION ${currentQuestionIndex + 1}/${quizQuestions.length}`;
-
-        if (currentQuestionIndex < quizQuestions.length) {
-            const currentQuestion = quizQuestions[currentQuestionIndex];
-            questionElement.innerText = currentQuestion.question;
-            const answers = [currentQuestion.correct_answer, ...currentQuestion.incorrect_answers.sort(() => Math.random() - 0.5).slice(0, 3)].sort(() => Math.random() - 0.5);
-
-            answers.forEach(answer => {
-                const button = document.createElement('button');
-                button.innerText = answer;
-                button.classList.add('answer-btn');
-                button.addEventListener('click', (event) => selectAnswer(event));
-                answersContainer.appendChild(button);
-            })
-
-            nextQuestionButton.disabled = true;
-            startTime();
-        } else {
-            showResult();
-        }
+    const showOptions = () => {
+        optionsCheck.addEventListener('change', () => {
+            if (optionsCheck.checked) {
+                optionsContainer.classList.remove('hidden');
+            } else {
+                optionsContainer.classList.add('hidden');
+            }
+        })
     }
 
-    const selectAnswer = (event) => {
-        const currentQuestion = quizQuestions[currentQuestionIndex];
-        const selectedAnswer = event.target.innerText;
+    const enableStart = () => {
+        startCheck.addEventListener('change', () => {
+            startButton.disabled = !startCheck.checked;
+            finePrint.style.display = finePrint.style.display === 'none' ? 'block' : 'none';
 
-        if (selectedAnswer === currentQuestion.correct_answer && !correctAnswers.includes(selectedAnswer)) {
-            correctAnswers.push(selectedAnswer);
-            score++;
-        }
-
-        nextQuestionButton.disabled = false;
+        })
     }
-
-    nextQuestionButton.addEventListener('click', () => {
-        currentQuestionIndex++;
-        clearInterval(timeInterval);
-        loadQuestion();
-    })
 
     const initQuiz = (amount, difficulty) => {
         let filteredQuestions = questions.filter(question => difficulty === 'default' || question.difficulty === difficulty);
@@ -651,6 +626,76 @@ document.addEventListener("DOMContentLoaded", () => {
             initQuiz(amount, difficulty);
         })
     }
+
+    const loadQuestion = () => {
+        answersContainer.innerHTML = '';
+        scoreElement.innerHTML = `Score: ${score}`;
+        questionTracker.innerHTML = `QUESTION ${currentQuestionIndex + 1}/${quizQuestions.length}`;
+
+        if (currentQuestionIndex < quizQuestions.length) {
+            const currentQuestion = quizQuestions[currentQuestionIndex];
+            questionElement.innerText = currentQuestion.question;
+            const answers = [currentQuestion.correct_answer, ...currentQuestion.incorrect_answers.sort(() => Math.random() - 0.5).slice(0, 3)].sort(() => Math.random() - 0.5);
+
+            answers.forEach(answer => {
+                const button = document.createElement('button');
+                button.innerText = answer;
+                button.classList.add('answer-btn');
+                button.addEventListener('click', (event) => selectAnswer(event));
+                answersContainer.appendChild(button);
+            })
+
+            nextQuestionButton.disabled = true;
+            startTime();
+        } else {
+            showResult();
+        }
+    }
+
+    const startTime = () => {
+        const currentQuestion = quizQuestions[currentQuestionIndex];
+        let totalTime = currentQuestion.time;
+        let time = totalTime;
+        timeElement.innerHTML = time;
+
+        const circlePath = document.querySelector('.progress-foreground');
+        const fullCircleLength = circlePath.getTotalLength();
+        circlePath.style.strokeDasharray = `${fullCircleLength} ${fullCircleLength}`;
+        circlePath.style.strokeDashoffset = fullCircleLength;
+
+        clearInterval(timeInterval);
+
+        timeInterval = setInterval(() => {
+            time--;
+            timeElement.innerHTML = time;
+            let dashOffset = (fullCircleLength * (totalTime - time)) / totalTime;
+            circlePath.style.strokeDashoffset = fullCircleLength - dashOffset;
+
+            if (time <= 0) {
+                clearInterval(timeInterval)
+                currentQuestionIndex++;
+                loadQuestion();
+            }
+        }, 1000)
+    }
+
+    const selectAnswer = (event) => {
+        const currentQuestion = quizQuestions[currentQuestionIndex];
+        const selectedAnswer = event.target.innerText;
+
+        if (selectedAnswer === currentQuestion.correct_answer && !correctAnswers.includes(selectedAnswer)) {
+            correctAnswers.push(selectedAnswer);
+            score++;
+        }
+
+        nextQuestionButton.disabled = false;
+    }
+
+    nextQuestionButton.addEventListener('click', () => {
+        currentQuestionIndex++;
+        clearInterval(timeInterval);
+        loadQuestion();
+    })
 
     const showResult = () => {
         let correctPercentage = (score / quizQuestions.length) * 100;
@@ -697,53 +742,6 @@ document.addEventListener("DOMContentLoaded", () => {
         feedbackPage.classList.remove('hidden');
         checkFeedbackConditions();
     })
-
-    
-
-    const showOptions = () => {
-        optionsCheck.addEventListener('change', () => {
-            if (optionsCheck.checked) {
-                optionsContainer.classList.remove('hidden');
-            } else {
-                optionsContainer.classList.add('hidden');
-            }
-        })
-    }
-
-    const enableStart = () => {
-        startCheck.addEventListener('change', () => {
-            startButton.disabled = !startCheck.checked;
-            finePrint.style.display = finePrint.style.display === 'none' ? 'block' : 'none';
-        })
-    }
-
-    const startTime = () => {
-        const currentQuestion = quizQuestions[currentQuestionIndex];
-        let totalTime = currentQuestion.time;
-        let time = totalTime;
-        timeElement.innerHTML = time;
-
-        const circlePath = document.querySelector('.progress-foreground');
-        const fullCircleLength = circlePath.getTotalLength();
-        circlePath.style.strokeDasharray = `${fullCircleLength} ${fullCircleLength}`;
-        circlePath.style.strokeDashoffset = fullCircleLength;
- 
-
-        clearInterval(timeInterval);
-
-        timeInterval = setInterval(() => {
-            time--;
-            timeElement.innerHTML = time;
-            let dashOffset = (fullCircleLength * (totalTime - time)) / totalTime;
-            circlePath.style.strokeDashoffset = fullCircleLength - dashOffset;
-
-            if (time <= 0) {
-                clearInterval(timeInterval)
-                currentQuestionIndex++;
-                loadQuestion();
-            }
-        }, 1000)
-    }
 
     const createOrUpdateChart = (data) => {
         if (chart) {
@@ -802,6 +800,13 @@ document.addEventListener("DOMContentLoaded", () => {
         }
     }
 
+    Array.from(stars).forEach((star, index) => {
+        star.addEventListener('click', () => {
+            handleStarClick(index);
+        })
+    })
+
+
     const handleStarClick = (index) => { 
         rating = index + 1;
         updateStars(rating);
@@ -821,12 +826,6 @@ document.addEventListener("DOMContentLoaded", () => {
         const isRatingSelected = rating > 0;
         feedbackButton.disabled = !isFeedbackProvided || !isRatingSelected;
     };
-
-    Array.from(stars).forEach((star, index) => {
-        star.addEventListener('click', () => {
-            handleStarClick(index);
-        })
-    })
 
     feedbackButton.addEventListener('click', () => {
         feedbackPage.classList.add('hidden');
