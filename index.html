@@ -92,15 +92,18 @@
             <div id="results-container">
                 <h1>Results</h1>
                 <p>The summary of your answers: </p>
-                <div id="results-data" style="display: inline-block; text-align:center">
-                    <div class="results-central"> <span id="correct-data"></span></div>
-                    <div class="results-central" style=" width: 500px;  height:500px;   text-align:center">
+                <div id="results-data">
+                    <div id="correct-data"></div>
+                    <div id="results-central">
                         <canvas id="my-chart"></canvas>
-                        <span style="position: relative; top:-48%;" id="test-result"></span>
+                        <p id="test-result"></p>
                     </div>
 
-                    <div class="results-central"><span id="wrong-data"></span></div>
+                    <div id="wrong-data"></div>
                 </div>
+            </div>
+            <div id="rate-us-container" class="hidden">
+                <button type="button" id="rate-us-btn">RATE US</button>
             </div>
         </div>
 
@@ -112,7 +115,7 @@
                     <h1 id="feedback-h1">Tell us how it's going</h1>
                     <p>From 0 to 10, how likely are you to recommend EPICODE to a friend or a colleague?</p>
                 </div>
-                <div id="feedback-input">
+                <div id="feedback-input-div">
                     <div>
                         <div name="" id="feedback-stars">
                             <svg width="47" height="46" viewBox="0 0 47 46" fill="none"
@@ -178,8 +181,8 @@
                         </div>
                         <div id="feedback-text" class="centeredText">
                             <p>Leave us an open feedback about your experience so far</p>
-                            <input type="text" placeholder="Write your comment here" id="feedback-input">
-                            <button type="button" id="feedback-btn">SEND</button>
+                            <input type="text" id="feedback-input" value="" placeholder="Write your comment here" />
+                            <button type="button" id="feedback-btn" disabled>SEND</button>
                         </div>
                     </div>
                 </div>
