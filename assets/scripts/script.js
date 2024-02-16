@@ -377,17 +377,17 @@ document.addEventListener('DOMContentLoaded', () => {
         timeContainer.classList.add('hidden');
         clearInterval(timeInterval);
         correctData.innerHTML = `
-            <h2>Correct</h2>
+            <h2 class="results-h2-correct">Correct</h2>
             <p>${correctPercentage.toFixed(1)}%</p>
             <p>${correctAnswers}/${quizQuestions.length} questions</p>
         `;
         wrongData.innerHTML = `
-            <h2>Wrong</h2>
+            <h2 class="results-h2-wrong">Wrong</h2>
             <p>${wrongPercentage.toFixed(1)}%</p>
             <p>${wrongAnswers}/${quizQuestions.length} questions</p>
         `;
         testResult.innerHTML = `
-            ${correctPercentage >= 60 ? "Congratulations!<br>You passed the exam." : "Unfortunately,<br>You did not pass the exam."}
+            ${correctPercentage >= 60 ? "<h3 class='results-h3-correct'>Congratulations!</h3>You passed the exam." : "<h3 class='results-h3-wrong'>Unfortunately,</h3>You did not pass the exam."}
         `;
 
         if (correctPercentage >= 60) {

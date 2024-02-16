@@ -230,6 +230,22 @@ ul {
   margin-top: -225px;
 }
 
+.results-h2-correct {
+    color: #00ffff;
+}
+
+.results-h2-wrong {
+    color: #d20094;
+}
+
+.results-h2-correct {
+    color: #00ffff;
+}
+
+.results-h3-wrong {
+    color: #d20094;
+}
+
 #correct-data,
 #wrong-data {
   display: inline-block;
