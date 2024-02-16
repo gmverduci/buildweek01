@@ -31,6 +31,7 @@ h3 {
 #logo {
   width: 200px;
   margin: 3em;
+  margin-bottom: 0;
 }
 
 #welcome-section-middle {
@@ -38,9 +39,11 @@ h3 {
 }
 
 
-#countdown-container {
+ #countdown-container {
   text-align: end;
+  padding: 0 5em;
 }
+/*
 #countdown {
   text-align: center;
   width: 40px;
@@ -58,7 +61,7 @@ h3 {
     rgba(204, 2, 146, 0.7) 100%
   );
 }
-
+ */
 .container-list {
   padding-right: 50px;
 }
@@ -192,15 +195,15 @@ ul {
 
 
 .timer-text {
-    font-family: Arial, sans-serif;
-    font-size: 20px;
-    fill: #000000;
+    font-weight: 700 ;
+    font-size: 40px;
+    fill: white;
 }
 
 .seconds-text {
-    font-family: Arial, sans-serif;
+   
     font-size: 30px;
-    fill: #000000;
+    fill: white;
 }
 
 .progress {
@@ -209,11 +212,12 @@ ul {
 }
 
 .progress-background {
-    stroke: #8A2BE2;
+    stroke: #e22b96;
 }
 
 .progress-foreground {
     stroke: #fff;
+    stroke-opacity:.8;
     stroke-dasharray: 565.48;
     stroke-dashoffset: 565.48;
     transition: stroke-dashoffset 1s linear;
