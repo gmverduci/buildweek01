@@ -269,7 +269,8 @@ document.addEventListener('DOMContentLoaded', () => {
     const nextQuestionButton = document.getElementById('btn-next');
     const resultSection = document.getElementById('results-page');
     const scoreElement = document.getElementById('score');
-    const timeElement = document.getElementById('countdown');
+    const timeContainer = document.getElementById('countdown');
+    const timeElement = document.getElementById('timer');
     const ctx = document.getElementById('my-chart').getContext('2d');
     const correctData = document.getElementById('correct-data');
     const wrongData = document.getElementById('wrong-data');
@@ -352,7 +353,7 @@ document.addEventListener('DOMContentLoaded', () => {
             const difficulty = document.getElementById('difficulty').value;
             const amount = parseInt(document.getElementById('amount').value, 10);
             welcomePage.classList.add('hidden');
-            timeElement.classList.remove('hidden');
+            timeContainer.classList.remove('hidden');
             quizPage.classList.remove('hidden');
 
             initQuiz(amount, difficulty);
@@ -370,7 +371,7 @@ document.addEventListener('DOMContentLoaded', () => {
         resultSection.classList.remove('hidden');
         rateUsContainer.classList.remove('hidden');
         quizPage.classList.add('hidden');
-        timeElement.classList.add('hidden');
+        timeContainer.classList.add('hidden');
         clearInterval(timeInterval);
         correctData.innerHTML = `
             <h2>Correct</h2>
@@ -424,20 +425,29 @@ document.addEventListener('DOMContentLoaded', () => {
 
     const startTime = () => {
         const currentQuestion = quizQuestions[currentQuestionIndex];
-        let time = currentQuestion.time;
-        timeElement.innerText = time;
+        let totalTime = currentQuestion.time;
+        let time = totalTime;
+        timeElement.innerHTML = time;
+
+        const circlePath = document.querySelector('.progress-foreground');
+        const fullCircleLength = circlePath.getTotalLength();
+        circlePath.style.strokeDasharray = `${fullCircleLength} ${fullCircleLength}`;
+        circlePath.style.strokeDashoffset = fullCircleLength;
+ 
 
         clearInterval(timeInterval);
 
         timeInterval = setInterval(() => {
             time--;
-            timeElement.innerText = time;
+            timeElement.innerHTML = time;
+            let dashOffset = (fullCircleLength * (totalTime - time)) / totalTime;
+            circlePath.style.strokeDashoffset = fullCircleLength - dashOffset;
+
             if (time <= 0) {
                 clearInterval(timeInterval)
                 currentQuestionIndex++;
                 loadQuestion();
             }
-
         }, 1000)
     }
 
