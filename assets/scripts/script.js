@@ -1,4 +1,16 @@
 document.addEventListener("DOMContentLoaded", () => {
+
+    // window.addEventListener("beforeunload", (event) => {
+    //     if (
+    //         !countdownDiv.classList.contains("hidden") &&
+    //         currentQuestionIndex >= 0
+    //     ) {
+    //         const message = "If you leave this page your exam will be failed!";
+    //         event.returnValue = message;
+    //         return message;
+    //     }
+    // });
+
   const questions = [
     {
       category: "HTML",
@@ -800,7 +812,7 @@ document.addEventListener("DOMContentLoaded", () => {
         } else {
             feedbackTextDiv.classList.add('hidden');
             feedbackButton.disabled = false;
-            window.open('https://www.trustpilot.com/review/www.example.com', '_blank');
+            window.open('https://www.trustpilot.com/review/epicode.com', '_blank');
         }
     }
 
