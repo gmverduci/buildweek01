@@ -114,7 +114,8 @@ ul {
 #answers {
   padding: 1em 0;
   width: 1000px;
-margin: 0 auto;}
+  margin: 0 auto;
+}
 
 .answer-btn {
   color: white;
@@ -180,51 +181,55 @@ margin: 0 auto;}
 }
 
 #results-data {
-    text-align: center;
-    margin-top: -225px;
+  text-align: center;
+  margin-top: -225px;
 }
-  
-#correct-data, #wrong-data {
-    display: inline-block;
-    width: 30%;
-    font-size: 25px;
+
+#correct-data,
+#wrong-data {
+  display: inline-block;
+  width: 30%;
+  font-size: 25px;
 }
-  
+
 #results-central {
-    display: inline-block;
-    width: 30%;
+  display: inline-block;
+  width: 30%;
 }
 
 canvas {
-    top: 50%;
-    transform: translateY(50%);
-    position: relative;
-}
-  
-#results-central p {
-    top: 50%;
-    transform: translateY(-50%);
-    position: relative;
-}
-  
-#results-container p {
-    font-size: 20px;
-}
-  
-#rate-us-btn {
-    background: transparent;
-    border: 2px solid white;
-    width: 200px;
-    height: 60px;
-    font-size: 22px;
-    color: white;
-    font-weight: 700;
-    #results-data {
-    text-align: center;
-    margin-top: -200px;
+  top: 50%;
+  transform: translateY(50%);
+  position: relative;
 }
 
-#correct-data, #wrong-data {
+#results-central p {
+  top: 50%;
+  transform: translateY(-50%);
+  position: relative;
+}
+
+#results-container p {
+  font-size: 20px;
+}
+
+#rate-us-btn {
+  background: transparent;
+  border: 2px solid white;
+  width: 200px;
+  height: 60px;
+  font-size: 22px;
+  color: white;
+  font-weight: 700;
+}
+
+#results-data {
+  text-align: center;
+  margin-top: -200px;
+}
+
+#correct-data,
+#wrong-data {
   display: inline-block;
   width: 30%;
   font-size: 25px;
@@ -270,14 +275,12 @@ canvas {
   text-align: center;
   margin-top: 15em;
 }
-  
-  
+
 #rate-us-btn:hover {
-    cursor: pointer;
-}
-  
-#rate-us-container {
-    text-align: center;
-    margin-top: 15em;
+  cursor: pointer;
 }
 
+#rate-us-container {
+  text-align: center;
+  margin-top: 15em;
+}
