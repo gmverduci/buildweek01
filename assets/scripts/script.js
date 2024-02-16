@@ -289,7 +289,7 @@ document.addEventListener('DOMContentLoaded', () => {
     const loadQuestion = () => {
         answersContainer.innerHTML = '';
         scoreElement.innerHTML = `Score: ${score}`;
-        questionTracker.innerHTML = `${currentQuestionIndex + 1}/${quizQuestions.length}`;
+        questionTracker.innerHTML = `QUESTION ${currentQuestionIndex + 1}/${quizQuestions.length}`;
 
         if (currentQuestionIndex < quizQuestions.length) {
             const currentQuestion = quizQuestions[currentQuestionIndex];
