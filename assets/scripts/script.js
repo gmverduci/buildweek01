@@ -664,6 +664,7 @@ document.addEventListener('DOMContentLoaded', () => {
         resultSection.classList.add('hidden');
         rateUsContainer.classList.add('hidden');
         feedbackPage.classList.remove('hidden');
+        checkFeedbackConditions();
     })
 
     
@@ -773,7 +774,7 @@ document.addEventListener('DOMContentLoaded', () => {
     const handleStarClick = (index) => { 
         rating = index + 1;
         updateStars(rating);
-
+        
         if (rating <= 8) {
             feedbackTextDiv.classList.remove('hidden');
             checkFeedbackConditions();
@@ -786,7 +787,8 @@ document.addEventListener('DOMContentLoaded', () => {
 
     const checkFeedbackConditions = () => {
         const isFeedbackProvided = feedbackInput.value.trim().length > 0;
-        feedbackButton.disabled = rating === 0 || !isFeedbackProvided;
+        const isRatingSelected = rating > 0;
+        feedbackButton.disabled = !isFeedbackProvided || !isRatingSelected;
     };
 
     Array.from(stars).forEach((star, index) => {
@@ -814,11 +816,12 @@ document.addEventListener('DOMContentLoaded', () => {
         rating = 0;
         updateStars(rating);
         data = [];
-        startCheck.checke = false;
+        startCheck.checked = false;
         optionsCheck.checked = false;
         difficultyMenu.value = 'default';
         questionAmount.value = 10;
         feedbackInput.value = '';
+        feedbackButton.disabled = true;
         finePrint.style.display = 'block';
         rangeOutput.value = 10;
     })
