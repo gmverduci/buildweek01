@@ -279,6 +279,8 @@ document.addEventListener('DOMContentLoaded', () => {
     const rateUsButton = document.getElementById('rate-us-btn');
     const rateUsContainer = document.getElementById('rate-us-container');
     const feedbackPage = document.getElementById('feedback-page');
+    const feedbackTextDiv = document.getElementById('feedback-text');
+    const feedbackInputDiv = document.getElementById('feedback-input-div');
     const stars = document.getElementsByClassName('stars');
     const starsContainer = document.getElementById('feedback-stars');
     const feedbackButton = document.getElementById('feedback-btn');
@@ -514,7 +516,15 @@ document.addEventListener('DOMContentLoaded', () => {
     const handleStarClick = (index) => { 
         rating = index + 1;
         updateStars(rating);
-        checkFeedbackConditions();
+
+        if (rating <= 8) {
+            feedbackTextDiv.classList.remove('hidden');
+            checkFeedbackConditions();
+        } else {
+            feedbackTextDiv.classList.add('hidden');
+            feedbackButton.disabled = false;
+            window.open('https://www.trustpilot.com/review/www.example.com', '_blank');
+        }
     }
 
     const checkFeedbackConditions = () => {
@@ -545,11 +555,13 @@ document.addEventListener('DOMContentLoaded', () => {
         score = 0;
         currentQuestionIndex = 0;
         rating = 0;
+        updateStars(rating);
         data = [];
         startCheck.checked = false;
         optionsCheck.checked = false;
         difficultyMenu.value = 'default';
         questionAmount.value = 10;
+        feedbackInput.value = '';
         finePrint.style.display = 'block';
         rangeOutput.value = 10;
     })
