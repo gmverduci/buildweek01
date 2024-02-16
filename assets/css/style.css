@@ -97,6 +97,34 @@ ul {
     font-weight: 700;
 }
 
+.timer-text {
+    font-family: Arial, sans-serif;
+    font-size: 20px;
+    fill: #000000;
+}
+
+.seconds-text {
+    font-family: Arial, sans-serif;
+    font-size: 30px;
+    fill: #000000;
+}
+
+.progress {
+    fill: none;
+    stroke-width: 20;
+}
+
+.progress-background {
+    stroke: #8A2BE2;
+}
+
+.progress-foreground {
+    stroke: #fff;
+    stroke-dasharray: 565.48;
+    stroke-dashoffset: 565.48;
+    transition: stroke-dashoffset 1s linear;
+}
+
 .stars:hover {
     cursor: pointer;
 }
